@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: "Fixel";
+    src: url(/fonts/FixelDisplay-Bold.otf) format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Fixel";
+    src: url(/fonts/FixelDisplay-Medium.otf) format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Fixel";
+    src: url(/fonts/FixelDisplay-Regular.otf) format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "e-Ukraine";
+    src: url(/fonts/e-UkraineHead-Bold.otf) format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "e-Ukraine";
+    src: url(/fonts/e-UkraineHead-Medium.otf) format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "e-Ukraine";
+    src: url(/fonts/e-UkraineHead-Regular.otf) format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
