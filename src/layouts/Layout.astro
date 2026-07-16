@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Footer from "../components/Footer/Footer.astro";
 ---
 
 <html lang="en">
@@ -9,9 +10,10 @@ import "../styles/global.css";
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Astro</title>
+        <title>ПМУ</title>
     </head>
-    <body>
+    <body class="bg-[#DCE4E7]">
         <slot />
+        <Footer />
     </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "patriotic-youth-of-ukraine",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -14,6 +14,10 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.9",
+    "embla-carousel": "^8.6.0",
     "tailwindcss": "^4.2.4"
+  },
+  "overrides": {
+    "vite": "^7"
   }
 }

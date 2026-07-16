@@ -1,0 +1,168 @@
+---
+import TeamCard from "./TeamCard.astro";
+
+const members = [
+    {
+        name: "Назарій Клос",
+        role: "Засновник / сценарист",
+        image: "/img/team/nazariy.jpg",
+    },
+    {
+        name: "Сабрі Рамазанов",
+        role: "Засновник / веброзробник",
+        image: "/img/team/Sabri.PNG",
+    },
+    {
+        name: "Дзвінка Криницька",
+        role: "Копірайтер / перекладач",
+        image: "/img/team/dzvinka.jpg",
+    },
+    {
+        name: "Антон Соколов",
+        role: "Веброзробник",
+        image: "/img/team/anton.jpg",
+    },
+    {
+        name: "Олексій Левітін",
+        role: "Копірайтер",
+        image: "/img/team/alexlevitin.PNG",
+    },
+    {
+        name: "Богдан Макаренко",
+        role: "Оператор / монтажер",
+        image: "/img/team/bogdanmakarenko.PNG",
+    },
+    {
+        name: "Юліанна Левітіна",
+        role: "Копірайтер / дизайнер / монтажер",
+        image: "/img/team/julianna.jpg",
+    },
+    {
+        name: "Катерина Демченкова",
+        role: "Копірайтер",
+        image: "/img/team/katerina.jpg",
+    },
+    {
+        name: "Марія Шапірко",
+        role: "Копірайтер / графічний дизайнер",
+        image: "/img/team/maria.jpg",
+    },
+    {
+        name: "Анастасія Коваль",
+        role: "Копірайтер",
+        image: "/img/team/nastya.jpg",
+    },
+    {
+        name: "Софія Рослик",
+        role: "Копірайтер",
+        image: "/img/team/roslyksofia.JPG",
+    },
+    {
+        name: "Софія Гуторович",
+        role: "Копірайтер",
+        image: "/img/team/sofiagurtovich.JPG",
+    },
+    {
+        name: "Злата Резнікова",
+        role: "Менеджерка з комунікацій",
+        image: "/img/team/zlatareznikova.jpg",
+    },
+    {
+        name: "Олександр Рак",
+        role: "Ведучий YouTube-каналу",
+        image: "/img/team/olexanderrak.JPG",
+    },
+    {
+        name: "Іван Крикун",
+        role: "Оператор / монтажер",
+        image: "/img/team/Ivan.jpg",
+    },
+    {
+        name: "Валерія Малієнко",
+        role: "Копірайтер",
+        image: "/img/team/valeria.jpg",
+    },
+];
+---
+
+<div class="team-carousel relative min-w-0 flex-1 px-8 md:px-0">
+    <button
+        type="button"
+        aria-label="Попередній учасник"
+        class="team-prev absolute md:left-0 left-6 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:h-14 md:w-14"
+    >
+        <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7" aria-hidden="true">
+            <path
+                d="M15 18L9 12L15 6"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+        </svg>
+    </button>
+
+    <div class="team-viewport overflow-hidden pt-8 pb-16">
+        <div class="team-container flex -ml-6">
+            {
+                members.map((member) => (
+                    <div class="min-w-0 flex-[0_0_100%] max-w-[500px] pl-6 md:flex-[0_0_50%] lg:flex-[0_0_33%] xl:flex-[0_0_100%] 2xl:flex-[0_0_50%]">
+                        <TeamCard
+                            name={member.name}
+                            role={member.role}
+                            image={member.image}
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+
+    <button
+        type="button"
+        aria-label="Наступний учасник"
+        class="team-next absolute md:right-0 right-6 top-1/2 z-20 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:h-14 md:w-14"
+    >
+        <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7" aria-hidden="true">
+            <path
+                d="M9 6L15 12L9 18"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+        </svg>
+    </button>
+</div>
+
+<script>
+    import EmblaCarousel from "embla-carousel";
+
+    const roots = document.querySelectorAll<HTMLElement>(".team-carousel");
+
+    roots.forEach((root) => {
+        const viewport = root.querySelector<HTMLElement>(".team-viewport");
+
+        const previousButton =
+            root.querySelector<HTMLButtonElement>(".team-prev");
+
+        const nextButton = root.querySelector<HTMLButtonElement>(".team-next");
+
+        if (!viewport) {
+            return;
+        }
+
+        const embla = EmblaCarousel(viewport, {
+            loop: true,
+            align: "start",
+            slidesToScroll: 1,
+            dragFree: false,
+        });
+
+        previousButton?.addEventListener("click", () => {
+            embla.scrollPrev();
+        });
+
+        nextButton?.addEventListener("click", () => {
+            embla.scrollNext();
+        });
+    });
+</script>

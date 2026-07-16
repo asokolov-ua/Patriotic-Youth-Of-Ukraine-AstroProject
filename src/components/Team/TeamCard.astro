@@ -1,0 +1,35 @@
+---
+interface Props {
+    name: string;
+    role: string;
+    image: string;
+}
+
+const { name, role, image } = Astro.props;
+---
+
+<article class="overflow-hidden rounded-[18px] bg-white">
+    <div class="aspect-[410/425] bg-white">
+        <img
+            src={image}
+            alt={name}
+            draggable="false"
+            loading="lazy"
+            class="h-full w-full select-none object-cover"
+        />
+    </div>
+
+    <div
+        class="min-h-[150px] bg-[#7ea4aa] px-6 py-5 text-[#2f4f52] xl:px-9 xl:py-7"
+    >
+        <h3
+            class="font-['Fixel'] text-xl font-bold leading-tight xl:text-[28px]"
+        >
+            {name}
+        </h3>
+
+        <p class="mt-2 font-['Fixel'] text-base leading-snug xl:text-[22px]">
+            {role}
+        </p>
+    </div>
+</article>
