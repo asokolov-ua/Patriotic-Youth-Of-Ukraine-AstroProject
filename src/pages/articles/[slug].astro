@@ -1,0 +1,151 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import ArticleBlock from "../../components/Articles/ArticleBlock.astro";
+import ArticleDetailHero from "../../components/Articles/ArticleDetailHero.astro";
+import RelatedArticles from "../../components/Articles/RelatedArticles.astro";
+import ArticleShare from "../../components/Articles/ArticleShare.astro";
+import ArticleBreadcrumbs from "../../components/Articles/ArticleBreadcrumbs.astro";
+import ArticleTableOfContents from "../../components/Articles/ArticleTableOfContents.astro";
+
+import { getNotionArticles } from "../../lib/notion/articles";
+import { getReadingTime } from "../../lib/readingTime";
+import { getArticleHeadings } from "../../lib/articleHeadings";
+
+import type { Article } from "../../data/articles";
+
+export async function getStaticPaths() {
+    const articles = await getNotionArticles();
+
+    return articles
+        .filter((article) => article.slug)
+        .map((article) => ({
+            params: {
+                slug: article.slug,
+            },
+            props: {
+                article,
+                articles,
+            },
+        }));
+}
+
+interface Props {
+    article: Article;
+    articles: Article[];
+}
+
+const { article, articles } = Astro.props;
+
+const headings = getArticleHeadings(article.content);
+const readingTime = getReadingTime(article.content);
+
+const canonicalPath = `/articles/${article.slug}`;
+
+const canonicalUrl = Astro.site
+    ? new URL(canonicalPath, Astro.site).toString()
+    : canonicalPath;
+
+const imagePath = article.ogImage ?? article.heroImage ?? article.cardImage;
+
+const imageUrl = Astro.site
+    ? new URL(imagePath, Astro.site).toString()
+    : imagePath;
+
+const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+
+    headline: article.seoTitle ?? article.title,
+    description: article.seoDescription ?? article.excerpt,
+
+    image: [imageUrl],
+
+    datePublished: article.date,
+    dateModified: article.updatedAt ?? article.date,
+
+    articleSection: article.category,
+
+    keywords:
+        article.tags && article.tags.length > 0
+            ? article.tags.join(", ")
+            : undefined,
+
+    author: {
+        "@type": "Organization",
+        name: article.author,
+    },
+
+    publisher: {
+        "@type": "Organization",
+        name: "Патріотична молодь України",
+        url: Astro.site?.toString(),
+    },
+
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+    },
+};
+---
+
+<Layout
+    title={article.seoTitle ?? article.title}
+    description={article.seoDescription ?? article.excerpt}
+    image={imagePath}
+    canonical={canonicalPath}
+    type="article"
+    jsonLd={articleJsonLd}
+>
+    <main>
+        <ArticleDetailHero
+            title={article.title}
+            excerpt={article.excerpt}
+            author={article.author}
+            date={article.date}
+            updatedAt={article.updatedAt}
+            readingTime={readingTime}
+            category={article.category}
+            tags={article.tags}
+            image={article.heroImage}
+            video={article.heroVideo}
+        />
+
+        <ArticleBreadcrumbs title={article.title} />
+
+        <article class="mx-auto max-w-[1100px] px-4 py-16 md:px-8 md:py-24">
+            {
+                headings.length >= 2 && (
+                    <ArticleTableOfContents headings={headings} />
+                )
+            }
+
+            {
+                article.content.length > 0 ? (
+                    <div class="space-y-10">
+                        {article.content.map((block, blockIndex) => {
+                            const headingId = headings.find(
+                                (heading) => heading.blockIndex === blockIndex,
+                            )?.id;
+
+                            return (
+                                <ArticleBlock
+                                    block={block}
+                                    headingId={headingId}
+                                />
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <p class="font-['Fixel'] text-lg leading-relaxed text-[#5f797d]">
+                        Контент цієї статті поки не додано.
+                    </p>
+                )
+            }
+        </article>
+
+        <ArticleShare title={article.title} slug={article.slug} />
+
+        <RelatedArticles articles={articles} currentSlug={article.slug} />
+    </main>
+</Layout>

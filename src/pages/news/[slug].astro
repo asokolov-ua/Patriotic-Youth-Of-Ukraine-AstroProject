@@ -1,0 +1,126 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import ArticleDetailHero from "../../components/Articles/ArticleDetailHero.astro";
+import ArticleBlock from "../../components/Articles/ArticleBlock.astro";
+import ArticleBreadcrumbs from "../../components/Articles/ArticleBreadcrumbs.astro";
+import ArticleShare from "../../components/Articles/ArticleShare.astro";
+import ArticleTableOfContents from "../../components/Articles/ArticleTableOfContents.astro";
+
+import { news } from "../../data/news";
+import type { NewsItem } from "../../types/news";
+
+import { getReadingTime } from "../../lib/readingTime";
+import { getArticleHeadings } from "../../lib/articleHeadings";
+import RelatedNews from "../../components/News/RelatedNews.astro";
+
+export function getStaticPaths() {
+    return news.map((item: NewsItem) => ({
+        params: {
+            slug: item.slug,
+        },
+        props: {
+            item,
+        },
+    }));
+}
+
+interface Props {
+    item: NewsItem;
+}
+
+const { item } = Astro.props;
+
+const readingTime = getReadingTime(item.content);
+const headings = getArticleHeadings(item.content);
+
+const canonicalUrl = new URL(`/news/${item.slug}`, Astro.site).toString();
+
+const imageUrl = new URL(item.ogImage ?? item.heroImage, Astro.site).toString();
+
+const newsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: item.seoTitle ?? item.title,
+    description: item.seoDescription ?? item.excerpt,
+    image: [imageUrl],
+
+    datePublished: item.date,
+    dateModified: item.updatedAt ?? item.date,
+
+    articleSection: item.category,
+    keywords: item.tags?.join(", "),
+
+    author: {
+        "@type": "Organization",
+        name: item.author,
+    },
+
+    publisher: {
+        "@type": "Organization",
+        name: "Патріотична молодь України",
+        url: Astro.site?.toString(),
+    },
+
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+    },
+};
+---
+
+<Layout
+    title={item.seoTitle ?? item.title}
+    description={item.seoDescription ?? item.excerpt}
+    image={item.ogImage ?? item.heroImage}
+    canonical={`/news/${item.slug}`}
+    type="article"
+    jsonLd={newsJsonLd}
+>
+    <main>
+        <ArticleDetailHero
+            title={item.title}
+            excerpt={item.excerpt}
+            author={item.author}
+            date={item.date}
+            updatedAt={item.updatedAt}
+            category={item.category}
+            tags={item.tags}
+            readingTime={readingTime}
+            image={item.heroImage}
+            video={item.heroVideo}
+        />
+
+        <ArticleBreadcrumbs
+            title={item.title}
+            sectionName="Новини"
+            sectionHref="/news"
+        />
+
+        <article class="mx-auto max-w-[900px] px-4 py-16 md:px-8 md:py-24">
+            {
+                headings.length >= 2 && (
+                    <ArticleTableOfContents headings={headings} />
+                )
+            }
+
+            <div class="space-y-10">
+                {
+                    item.content.map((block, blockIndex) => {
+                        const headingId = headings.find(
+                            (heading) => heading.blockIndex === blockIndex,
+                        )?.id;
+
+                        return (
+                            <ArticleBlock block={block} headingId={headingId} />
+                        );
+                    })
+                }
+            </div>
+        </article>
+
+        <ArticleShare title={item.title} slug={item.slug} basePath="/news" />
+
+        <RelatedNews items={news} currentSlug={item.slug} />
+    </main>
+</Layout>

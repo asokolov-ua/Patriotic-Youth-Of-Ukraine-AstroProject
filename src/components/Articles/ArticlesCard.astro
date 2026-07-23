@@ -1,0 +1,56 @@
+---
+interface Props {
+    title: string;
+    excerpt: string;
+    cardImage: string;
+    date: string;
+    slug: string;
+}
+
+const { title, excerpt, cardImage, date, slug } = Astro.props;
+---
+
+<a
+    href={`/articles/${slug}`}
+    class="group flex min-h-[560px] flex-col overflow-hidden rounded-[18px] bg-white p-5 shadow-[0_18px_35px_rgba(47,79,82,0.18)] transition duration-300 hover:-translate-y-1"
+>
+    <div class="flex items-center justify-between gap-4">
+        <time
+            datetime={date}
+            class="font-['Fixel'] text-sm font-semibold text-[#2f4f52]"
+        >
+            {date}
+        </time>
+
+        <span
+            class="rounded-full bg-[#7ea4aa] px-5 py-2 font-['Fixel'] text-sm font-semibold text-[#2f4f52]"
+        >
+            Читати
+        </span>
+    </div>
+
+    <div class="mt-5 aspect-[4/3] overflow-hidden rounded-[14px] bg-[#dce5e7]">
+        <img
+            src={cardImage}
+            alt={title}
+            loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+    </div>
+
+    <div class="flex flex-1 flex-col px-2 pb-2 pt-6">
+        <h2
+            class="font-['e-Ukraine'] text-2xl font-bold leading-snug text-[#2f4f52]"
+        >
+            {title}
+        </h2>
+
+        <p class="mt-4 font-['Fixel'] text-base leading-relaxed text-[#5f797d]">
+            {excerpt}
+        </p>
+
+        <span class="mt-auto pt-8 font-['Fixel'] font-semibold text-[#2f4f52]">
+            Читати статтю →
+        </span>
+    </div>
+</a>

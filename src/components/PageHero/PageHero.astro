@@ -1,0 +1,91 @@
+---
+import Navigation from "../Hero/Navigation.astro";
+import PageHeroContent from "./PageHeroContent.astro";
+
+interface Props {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+
+    buttonText?: string;
+    buttonHref?: string;
+
+    image?: string;
+    video?: string;
+    imageAlt?: string;
+
+    align?: "left" | "center";
+    overlay?: "light" | "medium" | "dark";
+    size?: "compact" | "default" | "large";
+}
+
+const {
+    eyebrow,
+    title,
+    description,
+
+    buttonText,
+    buttonHref,
+
+    image,
+    video,
+    imageAlt = "",
+
+    align = "left",
+    overlay = "medium",
+    size = "default",
+} = Astro.props;
+
+const overlayClasses = {
+    light: "bg-black/20",
+    medium: "bg-black/35",
+    dark: "bg-black/50",
+};
+
+const sizeClasses = {
+    compact: "h-[460px] md:h-[560px] lg:h-[650px]",
+    default: "h-[520px] md:h-[650px] lg:h-[820px]",
+    large: "h-[620px] md:h-[760px] lg:h-[900px]",
+};
+---
+
+<section class="my-4 px-4 md:px-8">
+    <div
+        class={`relative mx-auto max-w-[1680px] overflow-hidden rounded-[32px] bg-[#779ea5] px-6 py-4 lg:px-16 ${sizeClasses[size]}`}
+    >
+        {
+            video ? (
+                <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    class="absolute inset-0 h-full w-full object-cover"
+                >
+                    <source src={video} type="video/mp4" />
+                </video>
+            ) : image ? (
+                <img
+                    src={image}
+                    alt={imageAlt}
+                    class="absolute inset-0 h-full w-full object-cover"
+                />
+            ) : null
+        }
+
+        <div class={`absolute inset-0 ${overlayClasses[overlay]}`}></div>
+
+        <div class="relative z-10 flex h-full flex-col">
+            <Navigation />
+
+            <PageHeroContent
+                eyebrow={eyebrow}
+                title={title}
+                description={description}
+                buttonText={buttonText}
+                buttonHref={buttonHref}
+                align={align}
+            />
+        </div>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+---
+interface Props {
+    text: string;
+    variant?: "light" | "dark";
+}
+
+const { text, variant = "light" } = Astro.props;
+
+const variantClasses = {
+    light: "border-white/40 bg-white/10 text-white",
+    dark: "border-[#7ea4aa]/30 bg-[#7ea4aa]/15 text-[#2f4f52]",
+};
+---
+
+<span
+    class={`inline-flex w-fit items-center rounded-full border px-3 py-1.5 font-['Fixel'] text-xs font-semibold backdrop-blur-sm md:text-sm ${variantClasses[variant]}`}
+>
+    {text}
+</span>

@@ -1,0 +1,62 @@
+---
+import ArticlesCard from "./ArticlesCard.astro";
+import type { Article } from "../../data/articles";
+
+interface Props {
+    articles: Article[];
+    currentSlug: string;
+    limit?: number;
+}
+
+const { articles, currentSlug, limit = 3 } = Astro.props;
+
+const relatedArticles = articles
+    .filter((article) => article.slug !== currentSlug)
+    .slice(0, limit);
+---
+
+{
+    relatedArticles.length > 0 && (
+        <section class="px-4 py-16 md:px-8 md:py-24">
+            <div class="mx-auto max-w-[1680px]">
+                <div class="mb-10 flex items-end justify-between gap-6">
+                    <div>
+                        <p class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.12em] text-[#7ea4aa]">
+                            Продовжуйте читати
+                        </p>
+
+                        <h2 class="mt-2 font-['e-Ukraine'] text-3xl font-bold text-[#2f4f52] md:text-5xl">
+                            Інші статті
+                        </h2>
+                    </div>
+
+                    <a
+                        href="/articles"
+                        class="hidden font-['Fixel'] font-semibold text-[#2f4f52] transition hover:opacity-70 md:inline"
+                    >
+                        Усі статті →
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+                    {relatedArticles.map((article) => (
+                        <ArticlesCard
+                            title={article.title}
+                            excerpt={article.excerpt}
+                            cardImage={article.cardImage}
+                            date={article.date}
+                            slug={article.slug}
+                        />
+                    ))}
+                </div>
+
+                <a
+                    href="/articles"
+                    class="mt-8 inline-flex font-['Fixel'] font-semibold text-[#2f4f52] md:hidden"
+                >
+                    Усі статті →
+                </a>
+            </div>
+        </section>
+    )
+}

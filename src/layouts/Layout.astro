@@ -1,16 +1,63 @@
 ---
 import "../styles/global.css";
 import Footer from "../components/Footer/Footer.astro";
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    canonical?: string;
+    type?: "website" | "article";
+    jsonLd?: Record<string, unknown>;
+}
+
+const {
+    title = "ПМУ",
+    description = "Патріотична молодь України",
+    image = "/img/og/default-og.jpg",
+    canonical,
+    type = "website",
+    jsonLd,
+} = Astro.props;
+
+const fullTitle = title === "ПМУ" ? title : `${title} | ПМУ`;
 ---
 
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>ПМУ</title>
+
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+
+        <title>{fullTitle}</title>
+
+        <meta name="description" content={description} />
+
+        {canonical && <link rel="canonical" href={canonical} />}
+
+        <meta property="og:type" content={type} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+
+        {canonical && <meta property="og:url" content={canonical} />}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+
+        {
+            jsonLd && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(jsonLd)}
+                />
+            )
+        }
     </head>
     <body class="bg-[#DCE4E7]">
         <slot />

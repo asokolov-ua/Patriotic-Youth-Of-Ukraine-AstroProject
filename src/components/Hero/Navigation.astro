@@ -1,44 +1,292 @@
-<!-- Навігація хедера -->
-<nav class="flex items-center justify-between text-white pt-4">
+---
+const navigationLinks = [
+    { label: "Про нас", href: "/#about" },
+    { label: "Статті", href: "/articles" },
+    { label: "Новини", href: "/news" },
+    { label: "Контакти", href: "/#contacts" },
+];
+
+const socialLinks = [
+    {
+        label: "TikTok",
+        href: "#",
+        icon: "/img/icon/tiktok-icon.png",
+    },
+    {
+        label: "YouTube",
+        href: "#",
+        icon: "/img/icon/yt-icon.png",
+    },
+    {
+        label: "Instagram",
+        href: "#",
+        icon: "/img/icon/instagram-icon.png",
+    },
+];
+---
+
+<nav
+    class="relative z-[60] flex items-center justify-between pt-4 text-white"
+    aria-label="Основна навігація"
+>
     <!-- Логотип ПМУ -->
-    <div class="text-[32px] md:text-[40px] font-[e-Ukraine] font-bold">ПМУ</div>
+    <div class="font-[e-Ukraine] text-[32px] font-bold md:text-[40px]">
+        <a href="/">ПМУ</a>
+    </div>
 
-    <!-- Менюха -->
-    <ul class="hidden md:flex items-center gap-10 text-[20px] md:text-[24px]">
-        <li><a href="#">Про нас</a></li>
-        <li><a href="#">Статті</a></li>
-        <li><a href="#">Поезія</a></li>
-        <li><a href="#">Контакти</a></li>
+    <!-- Десктопне меню -->
+    <ul class="hidden items-center gap-10 text-[20px] md:flex md:text-[24px]">
+        {
+            navigationLinks.map((link) => (
+                <li>
+                    <a
+                        href={link.href}
+                        class="transition-opacity duration-200 hover:opacity-70"
+                    >
+                        {link.label}
+                    </a>
+                </li>
+            ))
+        }
     </ul>
 
-    <!-- Соцмережі -->
-    <ul class="flex items-center gap-4">
-        <li>
-            <a href="#">
-                <img
-                    class="w-6 h-6 md:w-8 md:h-8"
-                    src="/img/icon/tiktok-icon.png"
-                    alt="TikTok"
-                />
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <img
-                    class="w-6 h-6 md:w-8 md:h-8"
-                    src="/img/icon/yt-icon.png"
-                    alt="YouTube"
-                />
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <img
-                    class="w-6 h-6 md:w-8 md:h-8"
-                    src="/img/icon/instagram-icon.png"
-                    alt="Instagram"
-                />
-            </a>
-        </li>
+    <!-- Соцмережі на десктопі -->
+    <ul class="hidden items-center gap-4 md:flex">
+        {
+            socialLinks.map((social) => (
+                <li>
+                    <a
+                        href={social.href}
+                        aria-label={social.label}
+                        class="block transition-transform duration-200 hover:scale-110"
+                    >
+                        <img
+                            class="h-6 w-6 md:h-8 md:w-8"
+                            src={social.icon}
+                            alt={social.label}
+                        />
+                    </a>
+                </li>
+            ))
+        }
     </ul>
+
+    <!-- Бургер лише на мобільному -->
+    <button
+        type="button"
+        aria-label="Відкрити меню"
+        aria-expanded="false"
+        aria-controls="mobile-navbar"
+        data-burger-button
+        class="relative z-[70] flex h-10 w-10 items-center justify-center md:hidden"
+    >
+        <span class="sr-only">Відкрити меню</span>
+
+        <span class="relative block h-6 w-8">
+            <span
+                data-burger-line="top"
+                class="absolute left-0 top-0 h-0.5 w-full rounded-full bg-white transition-all duration-300"
+            ></span>
+
+            <span
+                data-burger-line="middle"
+                class="absolute left-0 top-1/2 h-0.5 w-full -translate-y-1/2 rounded-full bg-white transition-all duration-300"
+            ></span>
+
+            <span
+                data-burger-line="bottom"
+                class="absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-white transition-all duration-300"
+            ></span>
+        </span>
+    </button>
 </nav>
+
+<!-- Повноекранне мобільне меню -->
+<div
+    id="mobile-navbar"
+    data-mobile-navbar
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-0 z-50 translate-x-full bg-[#779ea5] opacity-0 transition-all duration-300 ease-in-out md:hidden"
+>
+    <div class="flex min-h-full flex-col justify-center px-6 pb-10 pt-24">
+        <ul class="flex flex-col items-center gap-6">
+            {
+                navigationLinks.map((link) => (
+                    <li>
+                        <a
+                            href={link.href}
+                            data-mobile-link
+                            class="font-[e-Ukraine] text-[38px] font-medium leading-tight text-white transition-opacity hover:opacity-70 sm:text-[48px]"
+                        >
+                            {link.label}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <ul class="mt-12 flex items-center justify-center gap-6">
+            {
+                socialLinks.map((social) => (
+                    <li>
+                        <a
+                            href={social.href}
+                            data-mobile-link
+                            aria-label={social.label}
+                            class="block transition-transform duration-200 hover:scale-110"
+                        >
+                            <img
+                                src={social.icon}
+                                alt={social.label}
+                                class="h-9 w-9"
+                            />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    function initializeMobileNavigation() {
+        const burgerButtonElement = document.querySelector<HTMLButtonElement>(
+            "[data-burger-button]",
+        );
+
+        const mobileNavbarElement = document.querySelector<HTMLElement>(
+            "[data-mobile-navbar]",
+        );
+
+        if (!burgerButtonElement || !mobileNavbarElement) return;
+
+        const burgerButton = burgerButtonElement;
+        const mobileNavbar = mobileNavbarElement;
+
+        if (burgerButton.dataset.initialized === "true") return;
+        burgerButton.dataset.initialized = "true";
+
+        const topLine = burgerButton.querySelector<HTMLElement>(
+            '[data-burger-line="top"]',
+        );
+
+        const middleLine = burgerButton.querySelector<HTMLElement>(
+            '[data-burger-line="middle"]',
+        );
+
+        const bottomLine = burgerButton.querySelector<HTMLElement>(
+            '[data-burger-line="bottom"]',
+        );
+
+        const mobileLinks =
+            mobileNavbar.querySelectorAll<HTMLAnchorElement>(
+                "[data-mobile-link]",
+            );
+
+        let isOpen = false;
+
+        function openMenu() {
+            isOpen = true;
+
+            burgerButton.setAttribute("aria-expanded", "true");
+            burgerButton.setAttribute("aria-label", "Закрити меню");
+            mobileNavbar.setAttribute("aria-hidden", "false");
+
+            mobileNavbar.classList.remove(
+                "pointer-events-none",
+                "translate-x-full",
+                "opacity-0",
+            );
+
+            mobileNavbar.classList.add(
+                "pointer-events-auto",
+                "translate-x-0",
+                "opacity-100",
+            );
+
+            // Верхня та нижня лінії перетворюються на хрестик
+            topLine?.classList.remove("top-0");
+            topLine?.classList.add("top-1/2", "-translate-y-1/2", "rotate-45");
+
+            middleLine?.classList.add("scale-x-0", "opacity-0");
+
+            bottomLine?.classList.remove("bottom-0");
+            bottomLine?.classList.add(
+                "bottom-1/2",
+                "translate-y-1/2",
+                "-rotate-45",
+            );
+
+            document.body.classList.add("overflow-hidden");
+        }
+
+        function closeMenu() {
+            isOpen = false;
+
+            burgerButton.setAttribute("aria-expanded", "false");
+            burgerButton.setAttribute("aria-label", "Відкрити меню");
+            mobileNavbar.setAttribute("aria-hidden", "true");
+
+            mobileNavbar.classList.add(
+                "pointer-events-none",
+                "translate-x-full",
+                "opacity-0",
+            );
+
+            mobileNavbar.classList.remove(
+                "pointer-events-auto",
+                "translate-x-0",
+                "opacity-100",
+            );
+
+            // Хрестик повертається у три горизонтальні лінії
+            topLine?.classList.remove(
+                "top-1/2",
+                "-translate-y-1/2",
+                "rotate-45",
+            );
+            topLine?.classList.add("top-0");
+
+            middleLine?.classList.remove("scale-x-0", "opacity-0");
+
+            bottomLine?.classList.remove(
+                "bottom-1/2",
+                "translate-y-1/2",
+                "-rotate-45",
+            );
+            bottomLine?.classList.add("bottom-0");
+
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        burgerButton.addEventListener("click", () => {
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        mobileLinks.forEach((link) => {
+            link.addEventListener("click", closeMenu);
+        });
+
+        // Додаткова доступність для користувачів клавіатури
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && isOpen) {
+                closeMenu();
+                burgerButton.focus();
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth >= 768 && isOpen) {
+                closeMenu();
+            }
+        });
+    }
+
+    initializeMobileNavigation();
+
+    document.addEventListener("astro:page-load", initializeMobileNavigation);
+</script>

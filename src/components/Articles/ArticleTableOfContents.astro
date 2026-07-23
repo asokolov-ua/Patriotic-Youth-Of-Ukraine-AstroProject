@@ -1,0 +1,41 @@
+---
+import type { ArticleHeading } from "../../lib/articleHeadings";
+
+interface Props {
+    headings: ArticleHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav
+    aria-label="Зміст статті"
+    class="mb-12 rounded-[24px] bg-[#eef4f5] p-6 shadow-[0_14px_30px_rgba(47,79,82,0.10)] md:p-8"
+>
+    <h2
+        class="font-['e-Ukraine'] text-2xl font-bold text-[#2f4f52] md:text-3xl"
+    >
+        Зміст
+    </h2>
+
+    <ol class="mt-5 space-y-3">
+        {
+            headings.map((heading, index) => (
+                <li>
+                    <a
+                        href={`#${heading.id}`}
+                        class="group flex items-start gap-3 font-['Fixel'] text-base leading-relaxed text-[#2f4f52] transition hover:text-[#7ea4aa] md:text-lg"
+                    >
+                        <span class="shrink-0 text-[#7ea4aa]">
+                            {index + 1}.
+                        </span>
+
+                        <span class="group-hover:underline">
+                            {heading.text}
+                        </span>
+                    </a>
+                </li>
+            ))
+        }
+    </ol>
+</nav>

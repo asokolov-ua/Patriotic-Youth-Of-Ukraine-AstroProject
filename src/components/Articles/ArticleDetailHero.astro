@@ -1,0 +1,140 @@
+---
+import Navigation from "../Hero/Navigation.astro";
+
+interface Props {
+    title: string;
+    excerpt?: string;
+    author: string;
+    date: string;
+
+    image?: string;
+    video?: string;
+
+    readingTime: number;
+
+    category: string;
+    tags?: string[];
+    updatedAt?: string;
+}
+
+const {
+    title,
+    excerpt,
+    author,
+    date,
+    updatedAt,
+    category,
+    tags = [],
+    readingTime,
+    image,
+    video,
+} = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat("uk-UA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+}).format(new Date(date));
+
+const formattedUpdatedAt = updatedAt
+    ? new Intl.DateTimeFormat("uk-UA", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+      }).format(new Date(updatedAt))
+    : null;
+---
+
+<section class="my-4 px-4 md:px-8">
+    <div
+        class="relative mx-auto min-h-[560px] max-w-[1680px] overflow-hidden rounded-[32px] bg-[#779ea5] px-6 py-4 md:min-h-[680px] lg:min-h-[820px] lg:px-16"
+    >
+        {
+            video ? (
+                <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    class="absolute inset-0 h-full w-full object-cover"
+                >
+                    <source src={video} type="video/mp4" />
+                </video>
+            ) : image ? (
+                <img
+                    src={image}
+                    alt=""
+                    class="absolute inset-0 h-full w-full object-cover"
+                />
+            ) : null
+        }
+
+        <div class="absolute inset-0 bg-black/45"></div>
+
+        <div class="relative z-10 flex min-h-[inherit] flex-col">
+            <Navigation />
+
+            <div class="flex flex-1 items-end pb-10 md:pb-14 lg:pb-20">
+                <div class="max-w-[1100px]">
+                    <div class="mb-5 flex flex-wrap items-center gap-2">
+                        <span
+                            class="rounded-full border border-white/40 bg-white/10 px-4 py-2 font-['Fixel'] text-sm text-white/90 backdrop-blur-sm"
+                        >
+                            {category}
+                        </span>
+
+                        {
+                            tags.map((tag) => (
+                                <span class="rounded-full bg-black/25 px-3 py-2 font-['Fixel'] text-xs text-white/85 backdrop-blur-sm md:text-sm">
+                                    #{tag}
+                                </span>
+                            ))
+                        }
+                    </div>
+
+                    <h1
+                        class="font-['e-Ukraine'] text-4xl font-bold leading-[1.05] text-white md:text-6xl lg:text-[76px]"
+                    >
+                        {title}
+                    </h1>
+
+                    {
+                        excerpt && (
+                            <p class="mt-5 max-w-[900px] font-['Fixel'] text-base leading-[1.6] text-white/90 md:text-xl lg:text-2xl">
+                                {excerpt}
+                            </p>
+                        )
+                    }
+
+                    <div
+                        class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 font-['Fixel'] text-sm text-white/75 md:text-base"
+                    >
+                        <span>{author}</span>
+
+                        <span aria-hidden="true">•</span>
+
+                        <time datetime={date}>
+                            {formattedDate}
+                        </time>
+
+                        <span aria-hidden="true">•</span>
+
+                        <span>{readingTime} хв читання</span>
+
+                        {
+                            formattedUpdatedAt && (
+                                <>
+                                    <span aria-hidden="true">•</span>
+
+                                    <time datetime={updatedAt}>
+                                        Оновлено {formattedUpdatedAt}
+                                    </time>
+                                </>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

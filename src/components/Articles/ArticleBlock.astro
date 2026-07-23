@@ -1,0 +1,274 @@
+---
+import type { ArticleBlock as ArticleBlockType } from "../../data/articles";
+
+interface Props {
+    block: ArticleBlockType;
+    headingId?: string;
+}
+
+const { block, headingId } = Astro.props;
+
+const infoStyles = {
+    default: {
+        wrapper: "border-[#7ea4aa] bg-[#dce8e1]",
+        title: "text-[#2f4f52]",
+    },
+
+    warning: {
+        wrapper: "border-[#b99b5f] bg-[#f2ead7]",
+        title: "text-[#66542e]",
+    },
+
+    success: {
+        wrapper: "border-[#6f9c82] bg-[#dce9e1]",
+        title: "text-[#345746]",
+    },
+};
+---
+
+{
+    block.type === "paragraph" && (
+        <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+            {block.text}
+        </p>
+    )
+}
+
+{
+    block.type === "heading" && (
+        <h2
+            id={headingId}
+            class="scroll-mt-28 font-['e-Ukraine'] text-3xl font-bold leading-tight text-[#2f4f52] md:text-4xl"
+        >
+            {block.text}
+        </h2>
+    )
+}
+
+{
+    block.type === "image-right" && (
+        <section class="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(280px,42%)]">
+            <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+                {block.text}
+            </p>
+
+            <figure class="min-w-0">
+                <img
+                    src={block.image}
+                    alt={block.alt}
+                    loading="lazy"
+                    class="block h-auto w-full max-w-full rounded-[20px] object-contain shadow-[0_18px_35px_rgba(47,79,82,0.18)]"
+                />
+            </figure>
+        </section>
+    )
+}
+
+{
+    block.type === "image-left" && (
+        <section class="grid items-center gap-8 md:grid-cols-[minmax(280px,42%)_minmax(0,1fr)]">
+            <figure class="min-w-0">
+                <img
+                    src={block.image}
+                    alt={block.alt}
+                    loading="lazy"
+                    class="block h-auto w-full max-w-full rounded-[20px] object-contain shadow-[0_18px_35px_rgba(47,79,82,0.18)]"
+                />
+            </figure>
+
+            <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+                {block.text}
+            </p>
+        </section>
+    )
+}
+
+{
+    block.type === "quote" && (
+        <blockquote class="rounded-[24px] border-l-[8px] border-[#7ea4aa] bg-white px-7 py-8 shadow-[0_14px_30px_rgba(47,79,82,0.12)] md:px-10">
+            <p class="font-['e-Ukraine'] text-2xl font-bold leading-relaxed text-[#2f4f52] md:text-3xl">
+                “{block.text}”
+            </p>
+
+            {block.author && (
+                <footer class="mt-5 font-['Fixel'] text-base text-[#5f797d]">
+                    — {block.author}
+                </footer>
+            )}
+        </blockquote>
+    )
+}
+
+{
+    block.type === "full-image" && (
+        <figure>
+            <img
+                src={block.image}
+                alt={block.alt}
+                loading="lazy"
+                class="block h-auto max-h-none w-full rounded-[24px] object-contain shadow-[0_18px_35px_rgba(47,79,82,0.18)]"
+            />
+
+            {block.caption && (
+                <figcaption class="mt-3 text-center font-['Fixel'] text-sm text-[#5f797d]">
+                    {block.caption}
+                </figcaption>
+            )}
+        </figure>
+    )
+}
+
+{
+    block.type === "list" &&
+        (block.ordered ? (
+            <ol class="list-decimal space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:font-semibold marker:text-[#7ea4aa] md:text-xl">
+                {block.items.map((item) => (
+                    <li>{item}</li>
+                ))}
+            </ol>
+        ) : (
+            <ul class="list-disc space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:text-[#7ea4aa] md:text-xl">
+                {block.items.map((item) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+        ))
+}
+
+{
+    block.type === "divider" && (
+        <div class="flex items-center justify-center py-5" aria-hidden="true">
+            <div class="h-px w-full bg-[#7ea4aa]/40" />
+
+            <span class="mx-5 text-xl text-[#7ea4aa]">◆</span>
+
+            <div class="h-px w-full bg-[#7ea4aa]/40" />
+        </div>
+    )
+}
+
+{
+    block.type === "youtube" && (
+        <figure>
+            {block.title && (
+                <h2 class="mb-5 font-['e-Ukraine'] text-2xl font-bold text-[#2f4f52] md:text-3xl">
+                    {block.title}
+                </h2>
+            )}
+
+            <div class="aspect-video overflow-hidden rounded-[24px] bg-black shadow-[0_18px_35px_rgba(47,79,82,0.18)]">
+                <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${block.videoId}`}
+                    title={block.title ?? "YouTube-відео"}
+                    class="h-full w-full"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                />
+            </div>
+
+            {block.caption && (
+                <figcaption class="mt-3 text-center font-['Fixel'] text-sm text-[#5f797d]">
+                    {block.caption}
+                </figcaption>
+            )}
+        </figure>
+    )
+}
+
+{
+    block.type === "gallery" && (
+        <section>
+            {block.title && (
+                <h2 class="mb-6 font-['e-Ukraine'] text-2xl font-bold leading-tight text-[#2f4f52] md:text-3xl">
+                    {block.title}
+                </h2>
+            )}
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {block.images.map((image) => (
+                    <figure class="overflow-hidden rounded-[20px] bg-white shadow-[0_14px_30px_rgba(47,79,82,0.14)]">
+                        <img
+                            src={image.src}
+                            alt={image.alt}
+                            loading="lazy"
+                            class="block h-auto w-full max-w-full object-contain"
+                        />
+
+                        {image.caption && (
+                            <figcaption class="px-5 py-4 font-['Fixel'] text-sm leading-relaxed text-[#5f797d]">
+                                {image.caption}
+                            </figcaption>
+                        )}
+                    </figure>
+                ))}
+            </div>
+        </section>
+    )
+}
+
+{
+    block.type === "info" && (
+        <aside
+            class={`rounded-[22px] border-l-[8px] px-6 py-6 md:px-8 ${
+                infoStyles[block.variant ?? "default"].wrapper
+            }`}
+        >
+            {block.title && (
+                <h3
+                    class={`font-['e-Ukraine'] text-xl font-bold md:text-2xl ${
+                        infoStyles[block.variant ?? "default"].title
+                    }`}
+                >
+                    {block.title}
+                </h3>
+            )}
+
+            <p
+                class={`${block.title ? "mt-3" : ""} font-['Fixel'] text-base leading-[1.7] text-[#2f4f52] md:text-lg`}
+            >
+                {block.text}
+            </p>
+        </aside>
+    )
+}
+
+{
+    block.type === "cta" && (
+        <aside class="rounded-[28px] bg-[#779ea5] px-6 py-8 text-[#2f4f52] shadow-[0_18px_35px_rgba(47,79,82,0.18)] md:px-10 md:py-10">
+            <h2 class="font-['e-Ukraine'] text-2xl font-bold leading-tight md:text-3xl">
+                {block.title}
+            </h2>
+
+            {block.text && (
+                <p class="mt-4 max-w-[700px] font-['Fixel'] text-base leading-[1.7] md:text-lg">
+                    {block.text}
+                </p>
+            )}
+
+            <a
+                href={block.buttonHref}
+                target={block.external ? "_blank" : undefined}
+                rel={block.external ? "noopener noreferrer" : undefined}
+                class="mt-7 inline-flex items-center gap-3 rounded-full bg-[#e4edef] px-6 py-3 font-['Fixel'] font-semibold transition-transform duration-200 hover:scale-105 active:scale-95"
+            >
+                {block.buttonText}
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    class="h-5 w-5"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M7 17L17 7M9 7h8v8"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </a>
+        </aside>
+    )
+}

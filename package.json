@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@notionhq/client": "^5.23.2",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.9",
     "embla-carousel": "^8.6.0",

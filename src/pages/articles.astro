@@ -1,3 +1,50 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero/PageHero.astro";
+import ArticleCard from "../components/Articles/ArticlesCard.astro";
+
+import { getNotionArticles } from "../lib/notion/articles";
+
+const notionArticles = await getNotionArticles();
 ---
+
+<Layout
+    title="Статті"
+    description="Статті та дослідження Патріотичної молоді України."
+>
+    <main>
+        <PageHero
+            title="Статті та дослідження"
+            description="Наша команда активно працює, аби передавати патріотичні думки крізь написання статей та розроблення досліджень."
+            buttonText="Переглянути статті"
+            buttonHref="#articles"
+            video="/img/video/background.mp4"
+            size="default"
+        />
+
+        <section
+            id="articles"
+            class="mx-auto max-w-[1680px] px-4 py-20 md:px-8 xl:px-[70px]"
+        >
+            {
+                notionArticles.length > 0 ? (
+                    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+                        {notionArticles.map((article) => (
+                            <ArticleCard
+                                title={article.title}
+                                excerpt={article.excerpt}
+                                cardImage={article.cardImage}
+                                date={article.date}
+                                slug={article.slug}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p class="font-['Fixel'] text-lg text-[#5f797d]">
+                        Опублікованих статей поки немає.
+                    </p>
+                )
+            }
+        </section>
+    </main>
+</Layout>

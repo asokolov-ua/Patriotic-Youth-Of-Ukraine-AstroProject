@@ -1,0 +1,92 @@
+---
+interface Props {
+    title: string;
+    slug: string;
+    basePath?: string;
+}
+
+const { title, slug, basePath = "/articles" } = Astro.props;
+
+const articleUrl = `${basePath}/${slug}`;
+const encodedUrl = encodeURIComponent(articleUrl);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<section
+    class="mx-auto max-w-[900px] px-4 pb-16 md:px-8 md:pb-24"
+    data-share
+    data-url={articleUrl}
+>
+    <div
+        class="flex flex-col gap-6 border-y border-[#7ea4aa]/40 py-8 md:flex-row md:items-center md:justify-between"
+    >
+        <div>
+            <p
+                class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.12em] text-[#7ea4aa]"
+            >
+                Поділіться матеріалом
+            </p>
+
+            <h2
+                class="mt-2 font-['e-Ukraine'] text-2xl font-bold text-[#2f4f52] md:text-3xl"
+            >
+                Розкажіть про статтю іншим
+            </h2>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+            <a
+                href={`https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Поділитися в Telegram"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-[#779ea5] px-5 font-['Fixel'] font-semibold text-[#2f4f52] transition hover:opacity-80"
+            >
+                Telegram
+            </a>
+
+            <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Поділитися у Facebook"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-[#779ea5] px-5 font-['Fixel'] font-semibold text-[#2f4f52] transition hover:opacity-80"
+            >
+                Facebook
+            </a>
+
+            <button
+                type="button"
+                data-copy-link
+                class="inline-flex h-12 items-center justify-center rounded-full border-2 border-[#779ea5] px-5 font-['Fixel'] font-semibold text-[#2f4f52] transition hover:bg-[#779ea5]/15"
+            >
+                Копіювати посилання
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    const shareSections = document.querySelectorAll("[data-share]");
+
+    shareSections.forEach((section) => {
+        const copyButton = section.querySelector("[data-copy-link]");
+
+        if (!(copyButton instanceof HTMLButtonElement)) return;
+
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+
+                const originalText = copyButton.textContent;
+                copyButton.textContent = "Скопійовано";
+
+                window.setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 1800);
+            } catch {
+                copyButton.textContent = "Не вдалося скопіювати";
+            }
+        });
+    });
+</script>

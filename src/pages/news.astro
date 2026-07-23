@@ -1,3 +1,58 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import NewsHero from "../components/News/NewsHero.astro";
+import NewsListCard from "../components/News/NewsListCard.astro";
+import EventsSidebar from "../components/News/EventsSidebar.astro";
+import { news, events } from "../data/news";
+
+const sortedNews = [...news].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+);
+
+const featuredNews = sortedNews.filter((item) => item.featured).slice(0, 3);
+
+const heroNews = [
+    ...featuredNews,
+    ...sortedNews.filter(
+        (item) =>
+            !featuredNews.some(
+                (featuredItem) => featuredItem.slug === item.slug,
+            ),
+    ),
+].slice(0, 3);
 ---
+
+<Layout
+    title="Новини"
+    description="Останні новини, події та ініціативи Патріотичної молоді України."
+>
+    <main>
+        <NewsHero items={heroNews} />
+
+        <section class="px-4 py-16 md:px-8 md:py-24">
+            <div class="mx-auto max-w-[1680px]">
+                <div class="mb-10">
+                    <p
+                        class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.12em] text-[#7ea4aa]"
+                    >
+                        Будьте в курсі
+                    </p>
+
+                    <h2
+                        class="mt-2 font-['e-Ukraine'] text-4xl font-bold text-[#2f4f52] md:text-5xl"
+                    >
+                        Останні новини
+                    </h2>
+                </div>
+
+                <div class="grid gap-10 xl:grid-cols-[minmax(0,1fr)_380px]">
+                    <div class="space-y-6">
+                        {sortedNews.map((item) => <NewsListCard item={item} />)}
+                    </div>
+
+                    <EventsSidebar events={events} />
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>

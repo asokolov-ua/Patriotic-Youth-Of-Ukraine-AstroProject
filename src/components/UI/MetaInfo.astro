@@ -1,0 +1,34 @@
+---
+interface Props {
+    date: string;
+    readingTime?: number;
+    theme?: "light" | "dark";
+}
+
+const { date, readingTime, theme = "light" } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat("uk-UA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+}).format(new Date(date));
+
+const textClass = theme === "light" ? "text-white/75" : "text-[#5f797d]";
+---
+
+<div
+    class={`flex flex-wrap items-center gap-x-3 gap-y-1 font-['Fixel'] text-xs md:text-sm ${textClass}`}
+>
+    <time datetime={date}>
+        {formattedDate}
+    </time>
+
+    {
+        readingTime !== undefined && (
+            <>
+                <span aria-hidden="true">•</span>
+                <span>{readingTime} хв читання</span>
+            </>
+        )
+    }
+</div>

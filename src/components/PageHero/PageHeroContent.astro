@@ -1,0 +1,63 @@
+---
+interface Props {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    buttonText?: string;
+    buttonHref?: string;
+    align?: "left" | "center";
+}
+
+const {
+    eyebrow,
+    title,
+    description,
+    buttonText,
+    buttonHref = "#",
+    align = "left",
+} = Astro.props;
+
+const alignmentClasses =
+    align === "center"
+        ? "mx-auto items-center text-center"
+        : "items-start text-left";
+---
+
+<div
+    class={`flex flex-1 flex-col justify-end pb-10 md:pb-14 lg:pb-20 ${alignmentClasses}`}
+>
+    <div class="max-w-[1050px]">
+        {
+            eyebrow && (
+                <p class="mb-4 font-['Fixel'] text-sm font-semibold uppercase tracking-[0.12em] text-white/80 md:text-base">
+                    {eyebrow}
+                </p>
+            )
+        }
+
+        <h1
+            class="font-['e-Ukraine'] text-4xl font-bold leading-[1.05] text-white md:text-6xl lg:text-[76px]"
+        >
+            {title}
+        </h1>
+
+        {
+            description && (
+                <p class="mt-5 max-w-[900px] font-['Fixel'] text-base leading-[1.6] text-white/90 md:text-xl lg:text-2xl">
+                    {description}
+                </p>
+            )
+        }
+
+        {
+            buttonText && (
+                <a
+                    href={buttonHref}
+                    class="mt-7 inline-flex w-fit items-center rounded-full border border-white/60 bg-white/10 px-6 py-3 font-['Fixel'] font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+                >
+                    {buttonText}
+                </a>
+            )
+        }
+    </div>
+</div>

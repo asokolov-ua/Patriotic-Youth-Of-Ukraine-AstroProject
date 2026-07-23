@@ -1,0 +1,53 @@
+---
+import Navigation from "../Hero/Navigation.astro";
+import FeaturedNewsCard from "./FeaturedNewsCard.astro";
+import CompactNewsCard from "./CompactNewsCard.astro";
+import type { NewsItem } from "../../types/news";
+
+interface Props {
+    items: NewsItem[];
+}
+
+const { items } = Astro.props;
+
+const [mainNews, secondNews, thirdNews] = items;
+---
+
+<section class="my-4 px-4 md:px-8">
+    <div
+        class="mx-auto max-w-[1680px] rounded-[32px] bg-[#779ea5] px-5 py-4 md:px-8 lg:px-12"
+    >
+        <Navigation />
+
+        <div class="py-8 md:py-12">
+            <p
+                class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.14em] text-white/70"
+            >
+                Останні події
+            </p>
+
+            <h1
+                class="mt-2 font-['e-Ukraine'] text-5xl font-bold uppercase leading-none text-white sm:text-6xl md:text-7xl lg:text-[80px]"
+            >
+                Новини
+            </h1>
+        </div>
+
+        {
+            mainNews ? (
+                <div class="grid gap-5 pb-6 xl:grid-cols-[minmax(0,1.9fr)_minmax(340px,1fr)]">
+                    <FeaturedNewsCard item={mainNews} />
+
+                    <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-1">
+                        {secondNews && <CompactNewsCard item={secondNews} />}
+                        {thirdNews && <CompactNewsCard item={thirdNews} />}
+                    </div>
+                </div>
+            ) : (
+                <p class="pb-10 font-['Fixel'] text-white/80">
+                    Поки немає опублікованих новин.
+                </p>
+            )
+        }
+    </div>
+</section>
