@@ -4,6 +4,18 @@ import PageHero from "../components/PageHero/PageHero.astro";
 import IntroSection from "../components/Intro/IntroSection.astro";
 import GoalsSection from "../components/Goals/GoalsSection.astro";
 import Team from "../components/Team/TeamSection.astro";
+import FreshArticles from "../components/Articles/FreshArticles.astro";
+
+import { getNotionTeam } from "../lib/notion/team";
+import { getNotionArticles } from "../lib/notion/articles";
+
+const notionTeam = await getNotionTeam();
+
+const notionArticles = await getNotionArticles();
+
+const freshArticles = notionArticles
+	.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+	.slice(0, 3);
 ---
 
 <Layout>
@@ -18,5 +30,6 @@ import Team from "../components/Team/TeamSection.astro";
 	/>
 	<IntroSection />
 	<GoalsSection />
-	<Team />
+	<Team members={notionTeam} />
+	<FreshArticles articles={freshArticles} />
 </Layout>

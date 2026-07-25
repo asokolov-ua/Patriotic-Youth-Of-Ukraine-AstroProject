@@ -3,9 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import NewsHero from "../components/News/NewsHero.astro";
 import NewsListCard from "../components/News/NewsListCard.astro";
 import EventsSidebar from "../components/News/EventsSidebar.astro";
-import { news, events } from "../data/news";
 
-const sortedNews = [...news].sort(
+import { getNotionEvents } from "../lib/notion/events";
+import { getNotionNews } from "../lib/notion/news";
+
+const notionNews = await getNotionNews();
+const notionEvents = await getNotionEvents();
+
+const sortedNews = [...notionNews].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 );
 
@@ -50,7 +55,7 @@ const heroNews = [
                         {sortedNews.map((item) => <NewsListCard item={item} />)}
                     </div>
 
-                    <EventsSidebar events={events} />
+                    <EventsSidebar events={notionEvents} />
                 </div>
             </div>
         </section>

@@ -7,29 +7,34 @@ import ArticleBreadcrumbs from "../../components/Articles/ArticleBreadcrumbs.ast
 import ArticleShare from "../../components/Articles/ArticleShare.astro";
 import ArticleTableOfContents from "../../components/Articles/ArticleTableOfContents.astro";
 
-import { news } from "../../data/news";
-import type { NewsItem } from "../../types/news";
-
-import { getReadingTime } from "../../lib/readingTime";
-import { getArticleHeadings } from "../../lib/articleHeadings";
 import RelatedNews from "../../components/News/RelatedNews.astro";
 
-export function getStaticPaths() {
-    return news.map((item: NewsItem) => ({
+import type { NewsItem } from "../../types/news";
+
+import { getNotionNews } from "../../lib/notion/news";
+import { getReadingTime } from "../../lib/readingTime";
+import { getArticleHeadings } from "../../lib/articleHeadings";
+
+export async function getStaticPaths() {
+    const notionNews = await getNotionNews();
+
+    return notionNews.map((item: NewsItem) => ({
         params: {
             slug: item.slug,
         },
         props: {
             item,
+            allNews: notionNews,
         },
     }));
 }
 
 interface Props {
     item: NewsItem;
+    allNews: NewsItem[];
 }
 
-const { item } = Astro.props;
+const { item, allNews } = Astro.props;
 
 const readingTime = getReadingTime(item.content);
 const headings = getArticleHeadings(item.content);
@@ -41,8 +46,10 @@ const imageUrl = new URL(item.ogImage ?? item.heroImage, Astro.site).toString();
 const newsJsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
+
     headline: item.seoTitle ?? item.title,
     description: item.seoDescription ?? item.excerpt,
+
     image: [imageUrl],
 
     datePublished: item.date,
@@ -121,6 +128,6 @@ const newsJsonLd = {
 
         <ArticleShare title={item.title} slug={item.slug} basePath="/news" />
 
-        <RelatedNews items={news} currentSlug={item.slug} />
+        <RelatedNews items={allNews} currentSlug={item.slug} />
     </main>
 </Layout>

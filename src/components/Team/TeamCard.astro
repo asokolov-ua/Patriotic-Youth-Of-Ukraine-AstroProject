@@ -2,16 +2,16 @@
 interface Props {
     name: string;
     role: string;
-    image: string;
+    photo: string;
 }
 
-const { name, role, image } = Astro.props;
+const { name, role, photo } = Astro.props;
 ---
 
 <article class="overflow-hidden rounded-[18px] bg-white">
     <div class="aspect-[410/425] bg-white">
         <img
-            src={image}
+            src={photo}
             alt={name}
             draggable="false"
             loading="lazy"

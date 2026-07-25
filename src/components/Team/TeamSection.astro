@@ -1,5 +1,12 @@
 ---
+import type { TeamMember } from "../../types/team";
 import TeamCarousel from "./TeamCarousel.astro";
+
+interface Props {
+    members: TeamMember[];
+}
+
+const { members } = Astro.props;
 ---
 
 <section class="bg-[rgba(122,159,166,0.4)]">
@@ -39,7 +46,7 @@ import TeamCarousel from "./TeamCarousel.astro";
             </div>
 
             <!-- RIGHT -->
-            <TeamCarousel />
+            <TeamCarousel members={members} />
         </div>
     </div>
 </section>

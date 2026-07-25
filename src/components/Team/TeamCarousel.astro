@@ -1,88 +1,12 @@
 ---
+import type { TeamMember } from "../../types/team";
 import TeamCard from "./TeamCard.astro";
 
-const members = [
-    {
-        name: "Назарій Клос",
-        role: "Засновник / сценарист",
-        image: "/img/team/nazariy.jpg",
-    },
-    {
-        name: "Сабрі Рамазанов",
-        role: "Засновник / веброзробник",
-        image: "/img/team/Sabri.PNG",
-    },
-    {
-        name: "Дзвінка Криницька",
-        role: "Копірайтер / перекладач",
-        image: "/img/team/dzvinka.jpg",
-    },
-    {
-        name: "Антон Соколов",
-        role: "Веброзробник",
-        image: "/img/team/anton.jpg",
-    },
-    {
-        name: "Олексій Левітін",
-        role: "Копірайтер",
-        image: "/img/team/alexlevitin.PNG",
-    },
-    {
-        name: "Богдан Макаренко",
-        role: "Оператор / монтажер",
-        image: "/img/team/bogdanmakarenko.PNG",
-    },
-    {
-        name: "Юліанна Левітіна",
-        role: "Копірайтер / дизайнер / монтажер",
-        image: "/img/team/julianna.jpg",
-    },
-    {
-        name: "Катерина Демченкова",
-        role: "Копірайтер",
-        image: "/img/team/katerina.jpg",
-    },
-    {
-        name: "Марія Шапірко",
-        role: "Копірайтер / графічний дизайнер",
-        image: "/img/team/maria.jpg",
-    },
-    {
-        name: "Анастасія Коваль",
-        role: "Копірайтер",
-        image: "/img/team/nastya.jpg",
-    },
-    {
-        name: "Софія Рослик",
-        role: "Копірайтер",
-        image: "/img/team/roslyksofia.JPG",
-    },
-    {
-        name: "Софія Гуторович",
-        role: "Копірайтер",
-        image: "/img/team/sofiagurtovich.JPG",
-    },
-    {
-        name: "Злата Резнікова",
-        role: "Менеджерка з комунікацій",
-        image: "/img/team/zlatareznikova.jpg",
-    },
-    {
-        name: "Олександр Рак",
-        role: "Ведучий YouTube-каналу",
-        image: "/img/team/olexanderrak.JPG",
-    },
-    {
-        name: "Іван Крикун",
-        role: "Оператор / монтажер",
-        image: "/img/team/Ivan.jpg",
-    },
-    {
-        name: "Валерія Малієнко",
-        role: "Копірайтер",
-        image: "/img/team/valeria.jpg",
-    },
-];
+interface Props {
+    members: TeamMember[];
+}
+
+const { members } = Astro.props;
 ---
 
 <div class="team-carousel relative min-w-0 flex-1 px-8 md:px-0">
@@ -105,11 +29,17 @@ const members = [
         <div class="team-container flex -ml-6">
             {
                 members.map((member) => (
-                    <div class="min-w-0 flex-[0_0_100%] max-w-[500px] pl-6 md:flex-[0_0_50%] lg:flex-[0_0_33%] xl:flex-[0_0_100%] 2xl:flex-[0_0_50%]">
+                    <div
+                        class="min-w-0 max-w-[500px] flex-[0_0_100%] pl-6
+                   md:flex-[0_0_50%]
+                   lg:flex-[0_0_33.333%]
+                   xl:flex-[0_0_100%]
+                   2xl:flex-[0_0_50%]"
+                    >
                         <TeamCard
                             name={member.name}
                             role={member.role}
-                            image={member.image}
+                            photo={member.photo}
                         />
                     </div>
                 ))

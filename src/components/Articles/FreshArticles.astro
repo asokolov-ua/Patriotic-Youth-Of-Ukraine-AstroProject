@@ -1,0 +1,66 @@
+---
+import type { Article } from "../../data/articles";
+import ArticlesCard from "./ArticlesCard.astro";
+
+interface Props {
+    articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<section class="px-4 py-20 md:px-8 xl:px-[70px]">
+    <div class="mx-auto max-w-[1680px]">
+        <div class="flex items-end justify-between gap-6">
+            <div>
+                <p
+                    class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.18em] text-[#7ea4aa]"
+                >
+                    Нові публікації
+                </p>
+
+                <h2
+                    class="mt-3 font-['e-Ukraine'] text-4xl font-bold leading-tight text-[#244244] md:text-5xl lg:text-6xl"
+                >
+                    Свіжі статті
+                </h2>
+            </div>
+
+            <a
+                href="/articles"
+                class="hidden items-center gap-2 rounded-full border border-[#7ea4aa] px-6 py-3 font-['Fixel'] font-semibold text-[#244244] transition hover:bg-[#7ea4aa] md:flex"
+            >
+                Усі статті
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        {
+            articles.length > 0 ? (
+                <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+                    {articles.map((article) => (
+                        <ArticlesCard
+                            title={article.title}
+                            excerpt={article.excerpt}
+                            cardImage={article.cardImage}
+                            date={article.date}
+                            slug={article.slug}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <p class="mt-10 font-['Fixel'] text-lg text-[#5f797d]">
+                    Опублікованих статей поки немає.
+                </p>
+            )
+        }
+
+        <a
+            href="/articles"
+            class="mt-10 flex w-full items-center justify-center gap-2 rounded-full bg-[#7ea4aa] px-6 py-4 font-['Fixel'] font-semibold text-[#244244] md:hidden"
+        >
+            Усі статті
+            <span aria-hidden="true">→</span>
+        </a>
+    </div>
+</section>
