@@ -135,7 +135,7 @@ function mapNotionPageToTeamMember(
     return {
         name: getTitleProperty(page, "Name"),
         role: getRichTextProperty(page, "Role"),
-        photo: getFileProperty(page, "Photo"),
+        photo: getRichTextProperty(page, "Photo"),
         bio: getRichTextProperty(page, "Bio"),
         order: getNumberProperty(page, "Order"),
         showOnWebsite: getCheckboxProperty(
@@ -158,32 +158,6 @@ function getNumberProperty(
     return property.number ?? Number.MAX_SAFE_INTEGER;
 }
 
-
-// export async function getNotionTeam(): Promise<TeamMember[]> {
-//     const dataSourceId = await getTeamDataSourceId();
-
-//     const response = await notion.dataSources.query({
-//         data_source_id: dataSourceId,
-
-//         sorts: [
-//             {
-//                 property: "Order",
-//                 direction: "ascending",
-//             },
-//         ],
-//     });
-
-//     return response.results
-//         .filter(isFullPage)
-//         .map(mapNotionPageToTeamMember)
-//         .filter(
-//             (member) =>
-//                 member.name &&
-//                 member.role &&
-//                 member.photo,
-//         )
-//         .sort((a, b) => a.order - b.order);
-// }
 
 async function getAllNotionTeam(): Promise<TeamMember[]> {
     const dataSourceId = await getTeamDataSourceId();

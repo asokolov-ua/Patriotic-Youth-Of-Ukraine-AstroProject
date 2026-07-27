@@ -28,7 +28,7 @@ const infoStyles = {
 
 {
     block.type === "paragraph" && (
-        <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+        <p class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
             {block.text}
         </p>
     )
@@ -38,7 +38,7 @@ const infoStyles = {
     block.type === "heading" && (
         <h2
             id={headingId}
-            class="scroll-mt-28 font-['e-Ukraine'] text-3xl font-bold leading-tight text-[#2f4f52] md:text-4xl"
+            class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] scroll-mt-28 font-['e-Ukraine'] text-3xl font-bold leading-tight text-[#2f4f52] md:text-4xl"
         >
             {block.text}
         </h2>
@@ -47,8 +47,8 @@ const infoStyles = {
 
 {
     block.type === "image-right" && (
-        <section class="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(280px,42%)]">
-            <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+        <section class="grid min-w-0 max-w-full items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(280px,42%)]">
+            <p class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
                 {block.text}
             </p>
 
@@ -66,7 +66,7 @@ const infoStyles = {
 
 {
     block.type === "image-left" && (
-        <section class="grid items-center gap-8 md:grid-cols-[minmax(280px,42%)_minmax(0,1fr)]">
+        <section class="grid min-w-0 max-w-full items-center gap-8 md:grid-cols-[minmax(280px,42%)_minmax(0,1fr)]">
             <figure class="min-w-0">
                 <img
                     src={block.image}
@@ -76,7 +76,7 @@ const infoStyles = {
                 />
             </figure>
 
-            <p class="font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
+            <p class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['Fixel'] text-lg leading-[1.75] text-[#2f4f52] md:text-xl">
                 {block.text}
             </p>
         </section>
@@ -85,8 +85,8 @@ const infoStyles = {
 
 {
     block.type === "quote" && (
-        <blockquote class="rounded-[24px] border-l-[8px] border-[#7ea4aa] bg-white px-7 py-8 shadow-[0_14px_30px_rgba(47,79,82,0.12)] md:px-10">
-            <p class="font-['e-Ukraine'] text-2xl font-bold leading-relaxed text-[#2f4f52] md:text-3xl">
+        <blockquote class="min-w-0 max-w-full overflow-hidden rounded-[24px] border-l-[8px] border-[#7ea4aa] bg-white px-7 py-8 shadow-[0_14px_30px_rgba(47,79,82,0.12)] md:px-10">
+            <p class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['e-Ukraine'] text-2xl font-bold leading-relaxed text-[#2f4f52] md:text-3xl">
                 “{block.text}”
             </p>
 
@@ -121,15 +121,15 @@ const infoStyles = {
 {
     block.type === "list" &&
         (block.ordered ? (
-            <ol class="list-decimal space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:font-semibold marker:text-[#7ea4aa] md:text-xl">
+            <ol class="min-w-0 max-w-full list-decimal space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:font-semibold marker:text-[#7ea4aa] md:text-xl">
                 {block.items.map((item) => (
-                    <li>{item}</li>
+                    <li class="break-words [overflow-wrap:anywhere]">{item}</li>
                 ))}
             </ol>
         ) : (
-            <ul class="list-disc space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:text-[#7ea4aa] md:text-xl">
+            <ul class="min-w-0 max-w-full list-disc space-y-3 pl-7 font-['Fixel'] text-lg leading-[1.7] text-[#2f4f52] marker:text-[#7ea4aa] md:text-xl">
                 {block.items.map((item) => (
-                    <li>{item}</li>
+                    <li class="break-words [overflow-wrap:anywhere]">{item}</li>
                 ))}
             </ul>
         ))
@@ -216,7 +216,7 @@ const infoStyles = {
         >
             {block.title && (
                 <h3
-                    class={`font-['e-Ukraine'] text-xl font-bold md:text-2xl ${
+                    class={`min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['e-Ukraine'] text-xl font-bold md:text-2xl ${
                         infoStyles[block.variant ?? "default"].title
                     }`}
                 >
@@ -225,7 +225,7 @@ const infoStyles = {
             )}
 
             <p
-                class={`${block.title ? "mt-3" : ""} font-['Fixel'] text-base leading-[1.7] text-[#2f4f52] md:text-lg`}
+                class={`${block.title ? "mt-3" : ""} min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['Fixel'] text-base leading-[1.7] text-[#2f4f52] md:text-lg`}
             >
                 {block.text}
             </p>
@@ -236,12 +236,12 @@ const infoStyles = {
 {
     block.type === "cta" && (
         <aside class="rounded-[28px] bg-[#779ea5] px-6 py-8 text-[#2f4f52] shadow-[0_18px_35px_rgba(47,79,82,0.18)] md:px-10 md:py-10">
-            <h2 class="font-['e-Ukraine'] text-2xl font-bold leading-tight md:text-3xl">
+            <h2 class="min-w-0 max-w-full break-words [overflow-wrap:anywhere] font-['e-Ukraine'] text-2xl font-bold leading-tight md:text-3xl">
                 {block.title}
             </h2>
 
             {block.text && (
-                <p class="mt-4 max-w-[700px] font-['Fixel'] text-base leading-[1.7] md:text-lg">
+                <p class="mt-4 min-w-0 max-w-[700px] break-words [overflow-wrap:anywhere] font-['Fixel'] text-base leading-[1.7] md:text-lg">
                     {block.text}
                 </p>
             )}

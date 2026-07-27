@@ -3,7 +3,7 @@ const navigationLinks = [
     { label: "Про нас", href: "/#about" },
     { label: "Статті", href: "/articles" },
     { label: "Новини", href: "/news" },
-    { label: "Контакти", href: "/#contacts" },
+    { label: "Контакти", href: "#contacts" },
 ];
 
 const socialLinks = [
@@ -113,7 +113,6 @@ const socialLinks = [
                         <a
                             href={link.href}
                             data-mobile-link
-                            target="_blank"
                             rel="noopener noreferrer"
                             class="font-[e-Ukraine] text-[38px] font-medium leading-tight text-white transition-opacity hover:opacity-70 sm:text-[48px]"
                         >
@@ -237,7 +236,6 @@ const socialLinks = [
                 "opacity-100",
             );
 
-            // Хрестик повертається у три горизонтальні лінії
             topLine?.classList.remove(
                 "top-1/2",
                 "-translate-y-1/2",
@@ -266,10 +264,35 @@ const socialLinks = [
         });
 
         mobileLinks.forEach((link) => {
-            link.addEventListener("click", closeMenu);
+            link.addEventListener("click", (event) => {
+                const href = link.getAttribute("href");
+
+                if (!href) {
+                    return;
+                }
+
+                if (href.startsWith("/#") && window.location.pathname === "/") {
+                    event.preventDefault();
+
+                    closeMenu();
+
+                    const targetId = href.split("#")[1];
+                    const target = document.getElementById(targetId);
+
+                    window.setTimeout(() => {
+                        target?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+                    }, 320);
+
+                    return;
+                }
+
+                closeMenu();
+            });
         });
 
-        // Додаткова доступність для користувачів клавіатури
         document.addEventListener("keydown", (event) => {
             if (event.key === "Escape" && isOpen) {
                 closeMenu();

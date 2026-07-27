@@ -141,10 +141,7 @@ function getDateProperty(
     return property.date?.start ?? "";
 }
 
-/**
- * Працює і з файлами, завантаженими прямо в Notion,
- * і з зовнішніми URL.
- */
+
 function getFilesProperty(
     page: PageObjectResponse,
     propertyName: string,
@@ -202,12 +199,12 @@ async function mapNotionPageToArticle(
         "Published At",
     );
 
-    const notionCardImage = getFilesProperty(
+    const notionCardImage = getRichTextProperty(
         page,
         "Card Image",
     );
 
-    const notionHeroImage = getFilesProperty(
+    const notionHeroImage = getRichTextProperty(
         page,
         "Hero Image",
     );

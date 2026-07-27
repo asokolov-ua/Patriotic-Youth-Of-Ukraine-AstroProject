@@ -193,11 +193,11 @@ async function mapNotionPageToNewsItem(
             page,
             "Featured",
         ),
-        cardImage: getFileProperty(
+        cardImage: getRichTextProperty(
             page,
             "Card Image",
         ),
-        heroImage: getFileProperty(
+        heroImage: getRichTextProperty(
             page,
             "Hero Image",
         ),
