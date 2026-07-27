@@ -54,7 +54,9 @@ const socialLinks = [
                 <li>
                     <a
                         href={social.href}
-                        aria-label={social.label}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${social.label} — відкрити в новій вкладці`}
                         class="block transition-transform duration-200 hover:scale-110"
                     >
                         <img
@@ -111,6 +113,8 @@ const socialLinks = [
                         <a
                             href={link.href}
                             data-mobile-link
+                            target="_blank"
+                            rel="noopener noreferrer"
                             class="font-[e-Ukraine] text-[38px] font-medium leading-tight text-white transition-opacity hover:opacity-70 sm:text-[48px]"
                         >
                             {link.label}
@@ -127,7 +131,7 @@ const socialLinks = [
                         <a
                             href={social.href}
                             data-mobile-link
-                            aria-label={social.label}
+                            aria-label={`${social.label} — відкрити в новій вкладці`}
                             class="block transition-transform duration-200 hover:scale-110"
                         >
                             <img
