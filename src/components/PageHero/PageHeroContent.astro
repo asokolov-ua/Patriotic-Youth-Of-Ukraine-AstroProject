@@ -26,7 +26,7 @@ const alignmentClasses =
 <div
     class={`flex flex-1 flex-col justify-end pb-10 md:pb-14 lg:pb-20 ${alignmentClasses}`}
 >
-    <div class="max-w-[1050px]">
+    <div data-reveal="up" class="max-w-[1050px]">
         {
             eyebrow && (
                 <p class="mb-4 font-['Fixel'] text-sm font-semibold uppercase tracking-[0.12em] text-white/80 md:text-base">
@@ -43,7 +43,11 @@ const alignmentClasses =
 
         {
             description && (
-                <p class="mt-5 max-w-[900px] font-['Fixel'] text-base leading-[1.6] text-white/90 md:text-xl lg:text-2xl">
+                <p
+                    data-reveal="up"
+                    style="--reveal-delay: 120ms"
+                    class="mt-5 max-w-[900px] font-['Fixel'] text-base leading-[1.6] text-white/90 md:text-xl lg:text-2xl"
+                >
                     {description}
                 </p>
             )
@@ -52,6 +56,8 @@ const alignmentClasses =
         {
             buttonText && (
                 <a
+                    data-reveal="up"
+                    style="--reveal-delay: 220ms"
                     href={buttonHref}
                     class="mt-7 inline-flex w-fit items-center rounded-full border border-white/60 bg-white/10 px-6 py-3 font-['Fixel'] font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
                 >

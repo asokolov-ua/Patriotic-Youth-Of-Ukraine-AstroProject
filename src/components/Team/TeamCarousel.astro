@@ -9,11 +9,11 @@ interface Props {
 const { members } = Astro.props;
 ---
 
-<div class="team-carousel relative min-w-0 flex-1 px-8 md:px-0">
+<div class="team-carousel relative w-full min-w-0 flex-1 px-8 md:px-0">
     <button
         type="button"
         aria-label="Попередній учасник"
-        class="team-prev absolute md:left-0 left-6 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:h-14 md:w-14"
+        class="team-prev absolute left-6 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:left-0 md:h-14 md:w-14"
     >
         <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7" aria-hidden="true">
             <path
@@ -25,17 +25,11 @@ const { members } = Astro.props;
         </svg>
     </button>
 
-    <div class="team-viewport overflow-hidden pt-8 pb-16">
-        <div class="team-container flex -ml-6">
+    <div class="team-viewport overflow-hidden py-8">
+        <div class="team-container -ml-6 flex">
             {
                 members.map((member) => (
-                    <div
-                        class="min-w-0 max-w-[500px] flex-[0_0_100%] pl-6
-                   md:flex-[0_0_50%]
-                   lg:flex-[0_0_33.333%]
-                   xl:flex-[0_0_100%]
-                   2xl:flex-[0_0_50%]"
-                    >
+                    <div class="min-w-0 shrink-0 basis-full pl-6 md:basis-1/2">
                         <TeamCard
                             name={member.name}
                             role={member.role}
@@ -50,7 +44,7 @@ const { members } = Astro.props;
     <button
         type="button"
         aria-label="Наступний учасник"
-        class="team-next absolute md:right-0 right-6 top-1/2 z-20 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:h-14 md:w-14"
+        class="team-next absolute right-6 top-1/2 z-20 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#7ea4aa] text-white shadow-lg transition duration-200 hover:scale-105 active:scale-95 md:right-0 md:h-14 md:w-14"
     >
         <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7" aria-hidden="true">
             <path
@@ -85,6 +79,7 @@ const { members } = Astro.props;
             align: "start",
             slidesToScroll: 1,
             dragFree: false,
+            containScroll: "trimSnaps",
         });
 
         previousButton?.addEventListener("click", () => {

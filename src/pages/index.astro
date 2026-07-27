@@ -6,16 +6,41 @@ import GoalsSection from "../components/Goals/GoalsSection.astro";
 import Team from "../components/Team/TeamSection.astro";
 import FreshArticles from "../components/Articles/FreshArticles.astro";
 
-import { getNotionTeam } from "../lib/notion/team";
+import { getNotionTeam, getNotionTeamCount } from "../lib/notion/team";
+
 import { getNotionArticles } from "../lib/notion/articles";
+import { getNotionNews } from "../lib/notion/news";
+import { getNotionEvents } from "../lib/notion/events";
 
 const notionTeam = await getNotionTeam();
+const notionTeamCount = await getNotionTeamCount();
 
 const notionArticles = await getNotionArticles();
+const notionNews = await getNotionNews();
+const notionEvents = await getNotionEvents();
 
-const freshArticles = notionArticles
+const freshArticles = [...notionArticles]
 	.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 	.slice(0, 3);
+
+const statistics = [
+	{
+		value: notionTeamCount,
+		label: "Учасників",
+	},
+	{
+		value: notionArticles.length,
+		label: "Статей",
+	},
+	{
+		value: notionNews.length,
+		label: "Новин",
+	},
+	{
+		value: notionEvents.length,
+		label: "Подій",
+	},
+];
 ---
 
 <Layout>
@@ -23,13 +48,17 @@ const freshArticles = notionArticles
 		title="Патріотична молодь України"
 		description="Ми створили цей проєкт для підвищення рівня патріотичності серед української молоді."
 		buttonText="Приєднатися"
-		buttonHref="#join"
+		buttonHref="/join"
 		video="/img/video/background.mp4"
 		overlay="medium"
 		size="large"
 	/>
-	<IntroSection />
+
+	<IntroSection stats={statistics} />
+
 	<GoalsSection />
+
 	<Team members={notionTeam} />
+
 	<FreshArticles articles={freshArticles} />
 </Layout>

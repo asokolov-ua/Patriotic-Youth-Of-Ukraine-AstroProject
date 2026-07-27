@@ -10,6 +10,9 @@ import { getNotionArticleBlocks } from "./articleBlocks";
 
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
 
+const FALLBACK_CARD_IMAGE = "/img/articles/image.png";
+const FALLBACK_HERO_IMAGE = "/img/articles/image.png";
+
 if (!databaseId) {
     throw new Error(
         "Не знайдено NOTION_DATABASE_ID у файлі .env",
@@ -138,6 +141,37 @@ function getDateProperty(
     return property.date?.start ?? "";
 }
 
+/**
+ * Працює і з файлами, завантаженими прямо в Notion,
+ * і з зовнішніми URL.
+ */
+function getFilesProperty(
+    page: PageObjectResponse,
+    propertyName: string,
+): string {
+    const property = page.properties[propertyName];
+
+    if (!property || property.type !== "files") {
+        return "";
+    }
+
+    const firstFile = property.files[0];
+
+    if (!firstFile) {
+        return "";
+    }
+
+    if (firstFile.type === "file") {
+        return firstFile.file.url;
+    }
+
+    if (firstFile.type === "external") {
+        return firstFile.external.url;
+    }
+
+    return "";
+}
+
 async function mapNotionPageToArticle(
     page: PageObjectResponse,
 ): Promise<Article> {
@@ -147,17 +181,35 @@ async function mapNotionPageToArticle(
         page,
         "Excerpt",
     );
-    const author = getRichTextProperty(page, "Author");
+
+    const author = getRichTextProperty(
+        page,
+        "Author",
+    );
+
     const category = getSelectProperty(
         page,
         "Category",
     );
 
-    const tags = getMultiSelectProperty(page, "tags");
+    const tags = getMultiSelectProperty(
+        page,
+        "tags",
+    );
 
     const date = getDateProperty(
         page,
         "Published At",
+    );
+
+    const notionCardImage = getFilesProperty(
+        page,
+        "Card Image",
+    );
+
+    const notionHeroImage = getFilesProperty(
+        page,
+        "Hero Image",
     );
 
     const content = await getNotionArticleBlocks(
@@ -180,8 +232,13 @@ async function mapNotionPageToArticle(
             "Featured",
         ),
 
-        cardImage: "/img/articles/image.png",
-        heroImage: "/img/articles/image.png",
+        cardImage:
+            notionCardImage || FALLBACK_CARD_IMAGE,
+
+        heroImage:
+            notionHeroImage ||
+            notionCardImage ||
+            FALLBACK_HERO_IMAGE,
 
         content,
     };
@@ -211,7 +268,9 @@ export async function getNotionArticles(): Promise<
         ],
     });
 
-    const pages = response.results.filter(isFullPage);
+    const pages = response.results.filter(
+        isFullPage,
+    );
 
     return Promise.all(
         pages.map(mapNotionPageToArticle),

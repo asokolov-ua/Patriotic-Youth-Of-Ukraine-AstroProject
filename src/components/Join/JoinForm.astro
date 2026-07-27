@@ -1,0 +1,950 @@
+---
+const directionGroups = [
+    {
+        title: "Контент і редактура",
+        items: ["Копірайтер", "Редактор", "Перекладач"],
+    },
+    {
+        title: "PR і комунікації",
+        items: ["PR-менеджер", "SMM-менеджер", "Менеджер з комунікацій"],
+    },
+    {
+        title: "Креативний напрям",
+        items: [
+            "Графічний дизайнер",
+            "UI/UX Designer",
+            "Motion Designer",
+            "Відеомонтажер",
+            "Відеокріейтор",
+            "Режисер",
+            "Фотограф",
+            "Відеооператор",
+        ],
+    },
+    {
+        title: "IT-напрям",
+        items: [
+            "Frontend Developer",
+            "Backend Developer",
+            "Full-Stack Developer",
+            "QA Engineer",
+            "DevOps Engineer",
+            "Technical Support Specialist",
+            "Web Designer",
+        ],
+    },
+    {
+        title: "Організаційний напрям",
+        items: [
+            "Координатор проєктів",
+            "Менеджер заходів",
+            "Організаційний менеджер",
+            "HR / координатор команди",
+        ],
+    },
+    {
+        title: "Модельний та освітній напрям",
+        items: [
+            "Координатор модельних заходів",
+            "Розробник навчальних програм",
+            "Модератор дискусій",
+            "Сценарист модельних засідань",
+        ],
+    },
+    {
+        title: "Фінансовий напрям",
+        items: ["Фінансовий менеджер", "Бухгалтер", "Грантовий менеджер"],
+    },
+    {
+        title: "Інше",
+        items: ["Інший напрям"],
+    },
+];
+
+const endpoint = import.meta.env.PUBLIC_GOOGLE_APPS_SCRIPT_URL;
+
+if (!endpoint) {
+    throw new Error("Не знайдено PUBLIC_GOOGLE_APPS_SCRIPT_URL у .env");
+}
+---
+
+<section id="join-form" class="px-4 py-16 md:px-8 md:py-24">
+    <div class="mx-auto max-w-[1280px]">
+        <!-- Основний вміст: інформаційна картка + форма -->
+        <div
+            id="join-content"
+            class="grid gap-10 xl:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)]"
+        >
+            <aside
+                class="h-fit rounded-[28px] bg-[#7ea4aa] p-7 text-[#244244] md:p-10 xl:sticky xl:top-8"
+            >
+                <p
+                    class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.16em]"
+                >
+                    Долучайтеся
+                </p>
+
+                <h2
+                    class="mt-4 font-['e-Ukraine'] text-4xl font-bold leading-[1.05] md:text-5xl"
+                >
+                    Станьте частиною ПМУ
+                </h2>
+
+                <p
+                    class="mt-6 font-['Fixel'] text-base leading-[1.7] md:text-lg"
+                >
+                    Розкажіть трохи про себе, свій досвід і напрями, у яких
+                    хочете розвиватися разом із командою.
+                </p>
+
+                <div
+                    class="mt-8 rounded-[22px] border border-white/40 bg-white/10 p-5 backdrop-blur-sm"
+                >
+                    <p class="font-['Fixel'] font-semibold">
+                        Перед відправленням
+                    </p>
+
+                    <ul
+                        class="mt-4 space-y-3 font-['Fixel'] text-sm leading-relaxed md:text-base"
+                    >
+                        <li>Оберіть не більше трьох напрямів.</li>
+                        <li>Заповніть контактні дані без помилок.</li>
+                        <li>Додайте портфоліо, якщо воно є.</li>
+                    </ul>
+                </div>
+                <div
+                    class="mt-6 rounded-[22px] border border-white/40 bg-white/10 p-5 backdrop-blur-sm"
+                >
+                    <p class="font-['Fixel'] font-semibold">Важливо знати</p>
+
+                    <ul
+                        class="mt-4 space-y-3 font-['Fixel'] text-sm leading-relaxed md:text-base"
+                    >
+                        <li>
+                            • Подати заявку можуть кандидати віком <strong
+                                >від 14 років</strong
+                            >.
+                        </li>
+
+                        <li>
+                            • Надсилання заявки <strong>не гарантує</strong> вступ
+                            до Патріотичної молоді України.
+                        </li>
+
+                        <li>
+                            • Кожна заявка проходить індивідуальний розгляд
+                            командою ПМУ.
+                        </li>
+
+                        <li>
+                            • Якщо ваша кандидатура відповідатиме поточним
+                            потребам організації, ми зв'яжемося з вами за
+                            вказаними контактами.
+                        </li>
+
+                        <li>
+                            • Зазвичай розгляд заявки займає
+                            <strong>до 7 календарних днів</strong>.
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <form
+                id="pmu-join-form"
+                data-endpoint={endpoint}
+                class="rounded-[28px] bg-white p-5 shadow-[0_20px_55px_rgba(47,79,82,0.14)] md:p-9"
+                novalidate
+            >
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="block">
+                        <span class="form-label">Ім’я *</span>
+
+                        <input
+                            class="form-input"
+                            type="text"
+                            name="firstName"
+                            autocomplete="given-name"
+                            required
+                        />
+                    </label>
+
+                    <label class="block">
+                        <span class="form-label">Прізвище *</span>
+
+                        <input
+                            class="form-input"
+                            type="text"
+                            name="lastName"
+                            autocomplete="family-name"
+                            required
+                        />
+                    </label>
+
+                    <label class="block">
+                        <span class="form-label">Email *</span>
+
+                        <input
+                            class="form-input"
+                            type="email"
+                            name="email"
+                            autocomplete="email"
+                            required
+                        />
+                    </label>
+
+                    <label class="block">
+                        <span class="form-label">Telegram *</span>
+
+                        <input
+                            id="telegram"
+                            class="form-input"
+                            type="text"
+                            name="telegram"
+                            placeholder="@username або https://t.me/username"
+                            autocomplete="off"
+                            required
+                        />
+                    </label>
+
+                    <label class="block">
+                        <span class="form-label"> Дата народження * </span>
+
+                        <input
+                            id="birth-date"
+                            class="form-input"
+                            type="date"
+                            name="birthDate"
+                            required
+                        />
+                    </label>
+
+                    <label class="block">
+                        <span class="form-label"> Місто / країна * </span>
+
+                        <input
+                            class="form-input"
+                            type="text"
+                            name="location"
+                            autocomplete="address-level2"
+                            required
+                        />
+                    </label>
+                </div>
+
+                <fieldset class="mt-10">
+                    <div
+                        class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+                    >
+                        <div>
+                            <legend
+                                class="font-['e-Ukraine'] text-2xl font-bold text-[#244244]"
+                            >
+                                Напрями діяльності *
+                            </legend>
+
+                            <p
+                                class="mt-2 font-['Fixel'] text-sm leading-relaxed text-[#5f797d]"
+                            >
+                                Оберіть до трьох напрямів, які вам найбільше
+                                цікаві.
+                            </p>
+                        </div>
+
+                        <div
+                            id="direction-counter"
+                            class="w-fit rounded-full bg-[#dce8ea] px-4 py-2 font-['Fixel'] text-sm font-semibold text-[#244244]"
+                            aria-live="polite"
+                        >
+                            Обрано: 0 / 3
+                        </div>
+                    </div>
+
+                    <div class="mt-7 grid gap-5 md:grid-cols-2">
+                        {
+                            directionGroups.map((group) => (
+                                <div class="rounded-[22px] border border-[#bdd0d3] bg-[#f4f8f8] p-5">
+                                    <h3 class="font-['e-Ukraine'] text-lg font-bold text-[#244244]">
+                                        {group.title}
+                                    </h3>
+
+                                    <div class="mt-4 space-y-3">
+                                        {group.items.map((item) => (
+                                            <label class="direction-option flex cursor-pointer items-start gap-3 rounded-[14px] px-3 py-2 transition hover:bg-white">
+                                                <input
+                                                    class="direction-checkbox mt-1 h-5 w-5 shrink-0 accent-[#2f4f52]"
+                                                    type="checkbox"
+                                                    name="directions"
+                                                    value={item}
+                                                />
+
+                                                <span class="font-['Fixel'] text-sm leading-relaxed text-[#2f4f52] md:text-base">
+                                                    {item}
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <p
+                        id="direction-error"
+                        class="mt-4 hidden font-['Fixel'] text-sm font-semibold text-red-700"
+                        role="alert"
+                    >
+                        Оберіть щонайменше один напрям діяльності.
+                    </p>
+                </fieldset>
+
+                <label class="mt-10 block">
+                    <span class="form-label"> Розкажіть трохи про себе * </span>
+
+                    <textarea
+                        id="about"
+                        class="form-input min-h-[180px] resize-y"
+                        name="about"
+                        minlength="100"
+                        maxlength="2000"
+                        placeholder="Ваш досвід, навички, мотивація та очікування від участі в ПМУ."
+                        required></textarea>
+
+                    <div
+                        class="mt-2 flex justify-between gap-4 font-['Fixel'] text-xs text-[#6f878a]"
+                    >
+                        <span>Щонайменше 100 символів</span>
+                        <span id="about-counter">0 / 2000</span>
+                    </div>
+                </label>
+
+                <label class="mt-6 block">
+                    <span class="form-label"> Посилання на портфоліо </span>
+
+                    <input
+                        class="form-input"
+                        type="url"
+                        name="portfolio"
+                        placeholder="https://..."
+                    />
+                </label>
+
+                <!-- Honeypot: людина цього поля не бачить -->
+                <div
+                    class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+                    aria-hidden="true"
+                >
+                    <label>
+                        Не заповнюйте це поле
+
+                        <input
+                            type="text"
+                            name="website"
+                            tabindex="-1"
+                            autocomplete="off"
+                        />
+                    </label>
+                </div>
+
+                <label
+                    class="mt-7 flex cursor-pointer items-start gap-3 rounded-[18px] bg-[#edf4f5] p-4"
+                >
+                    <input
+                        class="mt-1 h-5 w-5 shrink-0 accent-[#2f4f52]"
+                        type="checkbox"
+                        name="privacyConsent"
+                        required
+                    />
+
+                    <span
+                        class="font-['Fixel'] text-sm leading-relaxed text-[#2f4f52]"
+                    >
+                        Я погоджуюся на обробку персональних даних для розгляду
+                        моєї заявки. *
+                    </span>
+                </label>
+
+                <div
+                    class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                    <p
+                        id="form-status"
+                        class="font-['Fixel'] text-sm text-[#5f797d]"
+                        aria-live="polite"
+                    >
+                    </p>
+
+                    <button
+                        id="submit-button"
+                        type="submit"
+                        class="rounded-full bg-[#2f4f52] px-8 py-4 font-['Fixel'] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#244244] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        Подати заявку
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Успішне надсилання -->
+        <div
+            id="success-state"
+            class="mx-auto hidden max-w-[900px] rounded-[28px] bg-white p-8 text-center shadow-[0_20px_55px_rgba(47,79,82,0.14)] md:p-12"
+            tabindex="-1"
+        >
+            <div
+                class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#dce8ea] text-3xl text-[#244244]"
+                aria-hidden="true"
+            >
+                ✓
+            </div>
+
+            <h2
+                class="mt-6 font-['e-Ukraine'] text-3xl font-bold text-[#244244] md:text-4xl"
+            >
+                Заявку надіслано
+            </h2>
+
+            <p
+                class="mx-auto mt-4 max-w-[620px] font-['Fixel'] text-base leading-[1.7] text-[#5f797d] md:text-lg"
+            >
+                Дякуємо за інтерес до ПМУ. Команда розгляне заявку та зв’яжеться
+                з вами за вказаними контактами.
+            </p>
+
+            <a
+                href="/"
+                class="mt-8 inline-flex rounded-full bg-[#2f4f52] px-8 py-4 font-['Fixel'] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#244244]"
+            >
+                Повернутися на головну
+            </a>
+        </div>
+    </div>
+
+    <!-- Модальне підтвердження -->
+    <div
+        id="confirm-modal"
+        class="fixed inset-0 z-[1000] hidden items-center justify-center bg-black/55 px-4 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-modal-title"
+    >
+        <div
+            class="w-full max-w-[560px] rounded-[28px] bg-white p-6 shadow-[0_30px_80px_rgba(0,0,0,0.28)] md:p-9"
+        >
+            <p
+                class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.14em] text-[#7ea4aa]"
+            >
+                Підтвердження
+            </p>
+
+            <h2
+                id="confirm-modal-title"
+                class="mt-3 font-['e-Ukraine'] text-3xl font-bold text-[#244244]"
+            >
+                Надіслати заявку?
+            </h2>
+
+            <p class="mt-5 font-['Fixel'] leading-[1.7] text-[#5f797d]">
+                Перевірте, чи правильно вказані контактні дані. Після надсилання
+                заявка потрапить команді ПМУ на розгляд.
+            </p>
+
+            <div
+                class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"
+            >
+                <button
+                    id="cancel-submit"
+                    type="button"
+                    class="rounded-full border border-[#7ea4aa] px-7 py-3 font-['Fixel'] font-semibold text-[#244244] transition hover:bg-[#edf4f5]"
+                >
+                    Повернутися
+                </button>
+
+                <button
+                    id="confirm-submit"
+                    type="button"
+                    class="rounded-full bg-[#2f4f52] px-7 py-3 font-['Fixel'] font-semibold text-white transition hover:bg-[#244244] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                    Надіслати заявку
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const form = document.querySelector<HTMLFormElement>("#pmu-join-form");
+
+    const joinContent = document.querySelector<HTMLElement>("#join-content");
+
+    const directionCheckboxes = Array.from(
+        document.querySelectorAll<HTMLInputElement>(".direction-checkbox"),
+    );
+
+    const directionCounter =
+        document.querySelector<HTMLElement>("#direction-counter");
+
+    const directionError =
+        document.querySelector<HTMLElement>("#direction-error");
+
+    const formStatus = document.querySelector<HTMLElement>("#form-status");
+
+    const birthDateInput =
+        document.querySelector<HTMLInputElement>("#birth-date");
+
+    const telegramInput = document.querySelector<HTMLInputElement>("#telegram");
+
+    const aboutInput = document.querySelector<HTMLTextAreaElement>("#about");
+
+    const aboutCounter = document.querySelector<HTMLElement>("#about-counter");
+
+    const submitButton =
+        document.querySelector<HTMLButtonElement>("#submit-button");
+
+    const confirmModal = document.querySelector<HTMLElement>("#confirm-modal");
+
+    const cancelSubmitButton =
+        document.querySelector<HTMLButtonElement>("#cancel-submit");
+
+    const confirmSubmitButton =
+        document.querySelector<HTMLButtonElement>("#confirm-submit");
+
+    const successState = document.querySelector<HTMLElement>("#success-state");
+
+    const maxDirections = 3;
+    const minimumAge = 14;
+    const minimumAboutLength = 100;
+
+    function getSelectedDirections(): HTMLInputElement[] {
+        return directionCheckboxes.filter((checkbox) => checkbox.checked);
+    }
+
+    function updateDirectionState(): void {
+        const checked = getSelectedDirections();
+
+        if (directionCounter) {
+            directionCounter.textContent = `Обрано: ${checked.length} / ${maxDirections}`;
+        }
+
+        const reachedLimit = checked.length >= maxDirections;
+
+        directionCheckboxes.forEach((checkbox) => {
+            checkbox.disabled = reachedLimit && !checkbox.checked;
+        });
+
+        if (checked.length > 0) {
+            directionError?.classList.add("hidden");
+        }
+
+        updateSubmitState();
+    }
+
+    function isValidTelegram(value: string): boolean {
+        const normalized = value.trim();
+
+        const usernamePattern = /^@[a-zA-Z0-9_]{5,32}$/;
+
+        const linkPattern = /^https?:\/\/(www\.)?t\.me\/[a-zA-Z0-9_]{5,32}\/?$/;
+
+        return usernamePattern.test(normalized) || linkPattern.test(normalized);
+    }
+
+    function validateTelegram(): boolean {
+        if (!telegramInput) {
+            return true;
+        }
+
+        const value = telegramInput.value;
+
+        if (!value.trim()) {
+            telegramInput.setCustomValidity("Вкажіть Telegram.");
+
+            return false;
+        }
+
+        if (!isValidTelegram(value)) {
+            telegramInput.setCustomValidity(
+                "Введіть Telegram у форматі @username або https://t.me/username.",
+            );
+
+            return false;
+        }
+
+        telegramInput.setCustomValidity("");
+
+        return true;
+    }
+
+    function calculateAge(dateValue: string): number {
+        const birthDate = new Date(dateValue);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        const birthdayHasNotOccurred =
+            monthDifference < 0 ||
+            (monthDifference === 0 && today.getDate() < birthDate.getDate());
+
+        if (birthdayHasNotOccurred) {
+            age -= 1;
+        }
+
+        return age;
+    }
+
+    function validateBirthDate(): boolean {
+        if (!birthDateInput) {
+            return true;
+        }
+
+        if (!birthDateInput.value) {
+            birthDateInput.setCustomValidity("Вкажіть дату народження.");
+
+            return false;
+        }
+
+        const selectedDate = new Date(birthDateInput.value);
+
+        if (Number.isNaN(selectedDate.getTime()) || selectedDate > new Date()) {
+            birthDateInput.setCustomValidity(
+                "Вкажіть коректну дату народження.",
+            );
+
+            return false;
+        }
+
+        if (calculateAge(birthDateInput.value) < minimumAge) {
+            birthDateInput.setCustomValidity(
+                `До ПМУ можна подати заявку з ${minimumAge} років.`,
+            );
+
+            return false;
+        }
+
+        birthDateInput.setCustomValidity("");
+
+        return true;
+    }
+
+    function updateAboutCounter(): void {
+        if (!aboutInput || !aboutCounter) {
+            return;
+        }
+
+        aboutCounter.textContent = `${aboutInput.value.length} / 2000`;
+
+        if (aboutInput.value.trim().length < minimumAboutLength) {
+            aboutInput.setCustomValidity(
+                `Напишіть щонайменше ${minimumAboutLength} символів.`,
+            );
+        } else {
+            aboutInput.setCustomValidity("");
+        }
+
+        updateSubmitState();
+    }
+
+    function isFormReady(): boolean {
+        if (!form) {
+            return false;
+        }
+
+        return (
+            form.checkValidity() &&
+            getSelectedDirections().length > 0 &&
+            validateTelegram() &&
+            validateBirthDate() &&
+            (aboutInput?.value.trim().length ?? 0) >= minimumAboutLength
+        );
+    }
+
+    function updateSubmitState(): void {
+        if (!submitButton) {
+            return;
+        }
+
+        submitButton.disabled = !isFormReady();
+    }
+
+    function openConfirmModal(): void {
+        if (!confirmModal) {
+            return;
+        }
+
+        if (formStatus) {
+            formStatus.textContent = "";
+        }
+
+        confirmModal.classList.remove("hidden");
+        confirmModal.classList.add("flex");
+
+        document.body.style.overflow = "hidden";
+
+        confirmSubmitButton?.focus();
+    }
+
+    function closeConfirmModal(returnFocus = true): void {
+        if (!confirmModal) {
+            return;
+        }
+
+        confirmModal.classList.add("hidden");
+        confirmModal.classList.remove("flex");
+
+        document.body.style.overflow = "";
+
+        if (returnFocus) {
+            submitButton?.focus();
+        }
+    }
+
+    directionCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", updateDirectionState);
+    });
+
+    telegramInput?.addEventListener("input", () => {
+        validateTelegram();
+        updateSubmitState();
+    });
+
+    birthDateInput?.addEventListener("change", () => {
+        validateBirthDate();
+        updateSubmitState();
+    });
+
+    aboutInput?.addEventListener("input", updateAboutCounter);
+
+    form?.addEventListener("input", updateSubmitState);
+
+    form?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const checkedDirections = getSelectedDirections();
+
+        if (checkedDirections.length === 0) {
+            directionError?.classList.remove("hidden");
+
+            directionError?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+
+            return;
+        }
+
+        validateTelegram();
+        validateBirthDate();
+        updateAboutCounter();
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        openConfirmModal();
+    });
+
+    cancelSubmitButton?.addEventListener("click", () => closeConfirmModal());
+
+    confirmModal?.addEventListener("click", (event) => {
+        if (event.target === confirmModal) {
+            closeConfirmModal();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (
+            event.key === "Escape" &&
+            !confirmModal?.classList.contains("hidden")
+        ) {
+            closeConfirmModal();
+        }
+    });
+
+    async function submitApplication(): Promise<void> {
+        if (!form || !confirmSubmitButton || !submitButton) {
+            return;
+        }
+
+        if (confirmSubmitButton.disabled) {
+            return;
+        }
+
+        const endpoint = form.dataset.endpoint;
+
+        if (!endpoint) {
+            if (formStatus) {
+                formStatus.textContent =
+                    "Не налаштовано адресу відправлення форми.";
+            }
+
+            closeConfirmModal();
+
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        const honeypot = String(formData.get("website") ?? "").trim();
+
+        if (honeypot) {
+            closeConfirmModal();
+
+            if (formStatus) {
+                formStatus.textContent = "Не вдалося надіслати заявку.";
+            }
+
+            return;
+        }
+
+        const payload = {
+            firstName: String(formData.get("firstName") ?? "").trim(),
+
+            lastName: String(formData.get("lastName") ?? "").trim(),
+
+            email: String(formData.get("email") ?? "").trim(),
+
+            telegram: String(formData.get("telegram") ?? "").trim(),
+
+            birthDate: String(formData.get("birthDate") ?? ""),
+
+            location: String(formData.get("location") ?? "").trim(),
+
+            directions: getSelectedDirections().map(
+                (checkbox) => checkbox.value,
+            ),
+
+            about: String(formData.get("about") ?? "").trim(),
+
+            portfolio: String(formData.get("portfolio") ?? "").trim(),
+
+            privacyConsent: formData.get("privacyConsent") === "on",
+
+            website: honeypot,
+        };
+
+        confirmSubmitButton.disabled = true;
+        submitButton.disabled = true;
+
+        confirmSubmitButton.textContent = "Надсилаємо…";
+
+        if (formStatus) {
+            formStatus.textContent = "Надсилаємо заявку…";
+        }
+
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                },
+
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Помилка сервера: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (!result.success) {
+                throw new Error(
+                    result.message || "Не вдалося зберегти заявку.",
+                );
+            }
+
+            closeConfirmModal(false);
+
+            form.reset();
+
+            updateDirectionState();
+            updateAboutCounter();
+
+            joinContent?.classList.add("hidden");
+
+            successState?.classList.remove("hidden");
+
+            successState?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+
+            window.setTimeout(() => {
+                successState?.focus({
+                    preventScroll: true,
+                });
+            }, 500);
+        } catch (error) {
+            closeConfirmModal();
+
+            if (formStatus) {
+                formStatus.textContent =
+                    error instanceof Error
+                        ? `Не вдалося надіслати заявку: ${error.message}`
+                        : "Не вдалося надіслати заявку. Спробуйте ще раз.";
+            }
+        } finally {
+            confirmSubmitButton.disabled = false;
+
+            confirmSubmitButton.textContent = "Надіслати заявку";
+
+            updateSubmitState();
+        }
+    }
+
+    confirmSubmitButton?.addEventListener("click", submitApplication);
+
+    updateDirectionState();
+    updateAboutCounter();
+    updateSubmitState();
+</script>
+
+<style>
+    .form-label {
+        display: block;
+        margin-bottom: 0.625rem;
+        font-family: "Fixel", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #244244;
+    }
+
+    .form-input {
+        width: 100%;
+        border: 1px solid #bdd0d3;
+        border-radius: 16px;
+        background: #f7fafa;
+        padding: 0.95rem 1rem;
+        font-family: "Fixel", sans-serif;
+        color: #244244;
+        outline: none;
+        transition:
+            border-color 180ms ease,
+            box-shadow 180ms ease,
+            background-color 180ms ease;
+    }
+
+    .form-input:focus {
+        border-color: #7ea4aa;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(126, 164, 170, 0.16);
+    }
+
+    .form-input::placeholder {
+        color: #83999c;
+    }
+
+    .direction-option:has(input:checked) {
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px #7ea4aa;
+    }
+
+    .direction-option:has(input:disabled) {
+        cursor: not-allowed;
+        opacity: 0.48;
+    }
+</style>

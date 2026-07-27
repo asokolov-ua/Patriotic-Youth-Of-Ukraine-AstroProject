@@ -1,13 +1,24 @@
 ---
 import IntroStart from "./IntroStart.astro";
 import IntroStats from "./IntroStats.astro";
+
+interface StatItem {
+    value: number;
+    label: string;
+}
+
+interface Props {
+    stats: StatItem[];
+}
+
+const { stats } = Astro.props;
 ---
 
 <section class="my-4 px-4 md:px-8">
     <div class="mx-auto max-w-[1680px]">
         <div>
             <IntroStart />
-            <IntroStats />
+            <IntroStats stats={stats} />
         </div>
     </div>
 </section>

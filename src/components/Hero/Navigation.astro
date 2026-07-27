@@ -9,17 +9,17 @@ const navigationLinks = [
 const socialLinks = [
     {
         label: "TikTok",
-        href: "#",
+        href: "https://www.tiktok.com/@patriotichna_molod",
         icon: "/img/icon/tiktok-icon.png",
     },
     {
         label: "YouTube",
-        href: "#",
+        href: "https://www.youtube.com/@patriotychnamolod",
         icon: "/img/icon/yt-icon.png",
     },
     {
         label: "Instagram",
-        href: "#",
+        href: "https://www.instagram.com/patriotichna_molod?igsh=MTduNHppaHh2ODU2Zg==",
         icon: "/img/icon/instagram-icon.png",
     },
 ];
@@ -29,12 +29,10 @@ const socialLinks = [
     class="relative z-[60] flex items-center justify-between pt-4 text-white"
     aria-label="Основна навігація"
 >
-    <!-- Логотип ПМУ -->
     <div class="font-[e-Ukraine] text-[32px] font-bold md:text-[40px]">
         <a href="/">ПМУ</a>
     </div>
 
-    <!-- Десктопне меню -->
     <ul class="hidden items-center gap-10 text-[20px] md:flex md:text-[24px]">
         {
             navigationLinks.map((link) => (
@@ -50,7 +48,6 @@ const socialLinks = [
         }
     </ul>
 
-    <!-- Соцмережі на десктопі -->
     <ul class="hidden items-center gap-4 md:flex">
         {
             socialLinks.map((social) => (
@@ -71,7 +68,6 @@ const socialLinks = [
         }
     </ul>
 
-    <!-- Бургер лише на мобільному -->
     <button
         type="button"
         aria-label="Відкрити меню"
@@ -101,7 +97,6 @@ const socialLinks = [
     </button>
 </nav>
 
-<!-- Повноекранне мобільне меню -->
 <div
     id="mobile-navbar"
     data-mobile-navbar
@@ -204,7 +199,6 @@ const socialLinks = [
                 "opacity-100",
             );
 
-            // Верхня та нижня лінії перетворюються на хрестик
             topLine?.classList.remove("top-0");
             topLine?.classList.add("top-1/2", "-translate-y-1/2", "rotate-45");
 

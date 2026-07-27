@@ -1,4 +1,4 @@
-<section class="py-16 md:py-24 xl:py-32">
+<section id="intro-start" class="py-16 md:py-24 xl:py-32">
   <div class="mx-auto max-w-[1680px] px-6 md:px-10 xl:px-[70px]">
     <div
       class="flex flex-col items-center gap-12 lg:gap-20 xl:flex-row xl:items-center xl:justify-between xl:gap-28"
@@ -7,35 +7,47 @@
       <div class="w-full max-w-[720px] text-center xl:text-left">
         <h2
           id="about"
-          class="font-['e-Ukraine'] font-bold leading-[0.9] break-words text-[#244244]"
+          class="font-['e-Ukraine'] font-bold leading-[0.9] break-words"
+          aria-label="Привіт, ми Патріотична Молодь України!"
         >
           <span
-            class="mb-3 block text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl"
+            class="reveal-line mb-3 block text-4xl text-[#244244] sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl"
+            data-background-color="#DCE4E7"
+            data-foreground-color="#244244"
           >
             Привіт, ми
           </span>
 
           <span
-            class="block text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl text-[#7ea4aa] first-letter:text-[#244244]"
+            class="reveal-line block text-5xl text-[#7ea4aa] sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            data-background-color="#DCE4E7"
+            data-foreground-color="#7ea4aa"
+            data-first-color="#244244"
           >
             Патріотична
           </span>
 
           <span
-            class="block text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl text-[#7ea4aa] first-letter:text-[#244244]"
+            class="reveal-line block text-5xl text-[#7ea4aa] sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            data-background-color="#DCE4E7"
+            data-foreground-color="#7ea4aa"
+            data-first-color="#244244"
           >
             Молодь
           </span>
 
           <span
-            class="block text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl text-[#7ea4aa] first-letter:text-[#244244]"
+            class="reveal-line block text-5xl text-[#7ea4aa] sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            data-background-color="#DCE4E7"
+            data-foreground-color="#7ea4aa"
+            data-first-color="#244244"
           >
             України!
           </span>
         </h2>
 
         <p
-          class="mt-8 max-w-[620px] font-['Fixel'] text-lg leading-[1.55] text-[#244244] sm:mx-auto sm:text-xl lg:mt-12 lg:text-[22px] xl:mx-0 xl:mt-16 xl:text-[25px]"
+          class="reveal-copy mt-8 max-w-[620px] font-['Fixel'] text-lg leading-[1.55] text-[#244244] sm:mx-auto sm:text-xl lg:mt-12 lg:text-[22px] xl:mx-0 xl:mt-16 xl:text-[25px]"
         >
           Патріотична молодь України — громадська організація, спрямована на
           розвиток національної свідомості серед юнацтва.
@@ -44,7 +56,7 @@
 
       <!-- RIGHT -->
       <div
-        class="relative mx-auto aspect-[620/420] w-full max-w-[520px] overflow-hidden rounded-[24px] bg-[#7ba4aa] shadow-[-7px_7px_22px_0_rgba(0,0,0,0.10),_-27px_29px_39px_0_rgba(0,0,0,0.09),_-60px_65px_53px_0_rgba(0,0,0,0.05)] md:rounded-[28px]"
+        class="reveal-photo relative mx-auto aspect-[620/420] w-full max-w-[520px] overflow-hidden rounded-[24px] bg-[#7ba4aa] shadow-[-7px_7px_22px_0_rgba(0,0,0,0.10),_-27px_29px_39px_0_rgba(0,0,0,0.09),_-60px_65px_53px_0_rgba(0,0,0,0.05)] md:rounded-[28px]"
       >
         <img
           src="/img/intro/team-photo.jpg"
@@ -55,3 +67,206 @@
     </div>
   </div>
 </section>
+
+<script>
+  import gsap from "gsap";
+  import ScrollTrigger from "gsap/ScrollTrigger";
+  import SplitType from "split-type";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>("#intro-start");
+
+  if (section) {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const lines = Array.from(
+      section.querySelectorAll<HTMLElement>(".reveal-line"),
+    );
+
+    const copy = section.querySelector<HTMLElement>(".reveal-copy");
+
+    const photo = section.querySelector<HTMLElement>(".reveal-photo");
+
+    const splitLines = lines.map((line) => {
+      const split = new SplitType(line, {
+        types: "chars",
+      });
+
+      const characters = split.chars ?? [];
+
+      return {
+        characters,
+        backgroundColor: line.dataset.backgroundColor ?? "#c6d4d7",
+        foregroundColor: line.dataset.foregroundColor ?? "#7ea4aa",
+        firstColor: line.dataset.firstColor,
+      };
+    });
+
+    const copySplit = copy
+      ? new SplitType(copy, {
+          types: "words",
+        })
+      : null;
+
+    const copyWords = copySplit?.words ?? [];
+
+    if (reduceMotion) {
+      splitLines.forEach(({ characters, foregroundColor, firstColor }) => {
+        gsap.set(characters, {
+          color: (characterIndex: number) =>
+            characterIndex === 0 && firstColor ? firstColor : foregroundColor,
+        });
+      });
+
+      gsap.set(copyWords, {
+        color: "#244244",
+      });
+
+      gsap.set(photo, {
+        opacity: 1,
+      });
+    } else {
+      splitLines.forEach(({ characters, backgroundColor }) => {
+        gsap.set(characters, {
+          color: backgroundColor,
+        });
+      });
+
+      gsap.set(copyWords, {
+        color: "#b6c6c9",
+      });
+
+      if (photo) {
+        gsap.set(photo, {
+          opacity: 0.35,
+        });
+      }
+
+      const revealTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 92%",
+          end: "top 38%",
+          scrub: 0.55,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      splitLines.forEach(
+        ({ characters, foregroundColor, firstColor }, lineIndex) => {
+          revealTimeline.to(
+            characters,
+            {
+              color: (characterIndex: number) =>
+                characterIndex === 0 && firstColor
+                  ? firstColor
+                  : foregroundColor,
+
+              stagger: {
+                each: 0.025,
+                from: "start",
+              },
+
+              duration: 0.55,
+              ease: "none",
+            },
+            lineIndex === 0 ? 0 : ">-0.3",
+          );
+        },
+      );
+
+      revealTimeline.to(
+        copyWords,
+        {
+          color: "#244244",
+
+          stagger: {
+            each: 0.018,
+            from: "start",
+          },
+
+          duration: 0.4,
+          ease: "none",
+        },
+        ">-0.3",
+      );
+
+      if (photo) {
+        revealTimeline.to(
+          photo,
+          {
+            opacity: 1,
+            duration: 0.45,
+            ease: "none",
+          },
+          ">-0.3",
+        );
+      }
+
+      const hideTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "bottom 55%",
+          end: "bottom 8%",
+          scrub: 0.55,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      if (photo) {
+        hideTimeline.to(photo, {
+          opacity: 0.35,
+          duration: 0.35,
+          ease: "none",
+        });
+      }
+
+      hideTimeline.to(
+        copyWords,
+        {
+          color: "#b6c6c9",
+
+          stagger: {
+            each: 0.018,
+            from: "end",
+          },
+
+          duration: 0.4,
+          ease: "none",
+        },
+        ">-0.15",
+      );
+
+      [...splitLines].reverse().forEach(({ characters, backgroundColor }) => {
+        hideTimeline.to(
+          characters,
+          {
+            color: backgroundColor,
+
+            stagger: {
+              each: 0.025,
+              from: "end",
+            },
+
+            duration: 0.5,
+            ease: "none",
+          },
+          ">-0.28",
+        );
+      });
+
+      window.addEventListener(
+        "load",
+        () => {
+          ScrollTrigger.refresh();
+        },
+        {
+          once: true,
+        },
+      );
+    }
+  }
+</script>

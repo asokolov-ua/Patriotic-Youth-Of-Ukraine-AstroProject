@@ -116,6 +116,19 @@ async function getTeamDataSourceId(): Promise<string> {
     return dataSource.id;
 }
 
+function getCheckboxProperty(
+    page: PageObjectResponse,
+    propertyName: string,
+): boolean {
+    const property = page.properties[propertyName];
+
+    if (!property || property.type !== "checkbox") {
+        return false;
+    }
+
+    return property.checkbox;
+}
+
 function mapNotionPageToTeamMember(
     page: PageObjectResponse,
 ): TeamMember {
@@ -125,6 +138,10 @@ function mapNotionPageToTeamMember(
         photo: getFileProperty(page, "Photo"),
         bio: getRichTextProperty(page, "Bio"),
         order: getNumberProperty(page, "Order"),
+        showOnWebsite: getCheckboxProperty(
+            page,
+            "Show on Website",
+        ),
     };
 }
 
@@ -142,7 +159,33 @@ function getNumberProperty(
 }
 
 
-export async function getNotionTeam(): Promise<TeamMember[]> {
+// export async function getNotionTeam(): Promise<TeamMember[]> {
+//     const dataSourceId = await getTeamDataSourceId();
+
+//     const response = await notion.dataSources.query({
+//         data_source_id: dataSourceId,
+
+//         sorts: [
+//             {
+//                 property: "Order",
+//                 direction: "ascending",
+//             },
+//         ],
+//     });
+
+//     return response.results
+//         .filter(isFullPage)
+//         .map(mapNotionPageToTeamMember)
+//         .filter(
+//             (member) =>
+//                 member.name &&
+//                 member.role &&
+//                 member.photo,
+//         )
+//         .sort((a, b) => a.order - b.order);
+// }
+
+async function getAllNotionTeam(): Promise<TeamMember[]> {
     const dataSourceId = await getTeamDataSourceId();
 
     const response = await notion.dataSources.query({
@@ -159,12 +202,24 @@ export async function getNotionTeam(): Promise<TeamMember[]> {
     return response.results
         .filter(isFullPage)
         .map(mapNotionPageToTeamMember)
-        .filter(
-            (member) =>
-                member.name &&
-                member.role &&
-                member.photo,
-        )
+        .filter((member) => member.name)
         .sort((a, b) => a.order - b.order);
+}
+
+export async function getNotionTeam(): Promise<TeamMember[]> {
+    const members = await getAllNotionTeam();
+
+    return members.filter(
+        (member) =>
+            member.showOnWebsite &&
+            member.role &&
+            member.photo,
+    );
+}
+
+export async function getNotionTeamCount(): Promise<number> {
+    const members = await getAllNotionTeam();
+
+    return members.length;
 }
 

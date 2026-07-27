@@ -51,3 +51,37 @@
 html {
     scroll-behavior: smooth;
 }
+
+/* Sequential appear / vanish */
+
+[data-sequence-item] {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(0.985);
+
+    transition:
+        opacity 520ms ease,
+        filter 620ms ease,
+        transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    transition-delay: var(--sequence-delay-out, 0ms);
+
+    will-change: opacity, filter, transform;
+}
+
+[data-sequence].is-active [data-sequence-item] {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+
+    transition-delay: var(--sequence-delay-in, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-sequence-item] {
+        opacity: 1;
+        filter: none;
+        transform: none;
+        transition: none;
+    }
+}

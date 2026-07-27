@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-    title = "ПМУ",
+    title = "Патріотична молодь України",
     description = "Патріотична молодь України",
     image = "/img/og/default-og.jpg",
     canonical,
@@ -20,7 +20,8 @@ const {
     jsonLd,
 } = Astro.props;
 
-const fullTitle = title === "ПМУ" ? title : `${title} | ПМУ`;
+const fullTitle =
+    title === "Патріотична молодь України" ? title : `${title} | ПМУ`;
 ---
 
 <html lang="en">
@@ -28,9 +29,20 @@ const fullTitle = title === "ПМУ" ? title : `${title} | ПМУ`;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         <title>{fullTitle}</title>
 
@@ -58,9 +70,11 @@ const fullTitle = title === "ПМУ" ? title : `${title} | ПМУ`;
                 />
             )
         }
-    </head>
-    <body class="bg-[#DCE4E7]">
+    </head><body class="bg-[#DCE4E7]">
         <slot />
         <Footer />
+        <script>
+            import "../scripts/revealType";
+        </script>
     </body>
 </html>

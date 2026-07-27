@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero/PageHero.astro";
+import JoinForm from "../components/Join/JoinForm.astro";
+---
+
+<Layout
+    title="Приєднатися до ПМУ"
+    description="Подайте заявку, щоб долучитися до команди Патріотичної молоді України."
+>
+    <main>
+        <PageHero
+            title="Приєднатися до ПМУ"
+            description="Заповніть коротку анкету, розкажіть про себе та напрям, у якому хочете розвиватися разом із командою."
+            buttonText="Заповнити анкету"
+            buttonHref="#join-form"
+            video="/img/video/background.mp4"
+            overlay="medium"
+            size="default"
+        />
+
+        <JoinForm />
+    </main>
+</Layout>

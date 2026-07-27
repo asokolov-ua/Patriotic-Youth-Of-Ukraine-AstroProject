@@ -4,4 +4,5 @@ export interface TeamMember {
     photo: string;
     order: number;
     bio: string;
+    showOnWebsite: boolean;
 }
