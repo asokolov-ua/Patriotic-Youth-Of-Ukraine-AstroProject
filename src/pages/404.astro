@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+    title="Сторінку не знайдено"
+    description="Сторінку, яку ви шукаєте, не знайдено."
+>
+    <main
+        class="flex min-h-[75vh] items-center justify-center bg-[#DCE4E7] px-5 py-20"
+    >
+        <div class="mx-auto max-w-[760px] text-center">
+            <p
+                class="font-['Fixel'] text-sm font-semibold uppercase tracking-[0.18em] text-[#5f797d]"
+            >
+                Помилка 404
+            </p>
+
+            <h1
+                class="mt-4 font-['e-Ukraine'] text-5xl font-bold leading-tight text-[#244244] md:text-7xl"
+            >
+                Сторінку не знайдено
+            </h1>
+
+            <p
+                class="mx-auto mt-6 max-w-[600px] font-['Fixel'] text-base leading-7 text-[#5f797d] md:text-lg md:leading-8"
+            >
+                Можливо, сторінку було переміщено, видалено або в адресі
+                допущено помилку.
+            </p>
+
+            <a
+                href="/"
+                class="mt-8 inline-flex items-center gap-3 rounded-full bg-[#244244] px-7 py-4 font-['Fixel'] text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-80"
+            >
+                На головну
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </main>
+</Layout>

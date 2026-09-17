@@ -168,6 +168,9 @@ export async function getNotionEvents(): Promise<
             ],
         });
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return response.results
         .filter(isFullPage)
         .map(mapNotionPageToEvent)
@@ -178,6 +181,12 @@ export async function getNotionEvents(): Promise<
                 event.time &&
                 event.location,
         )
+        .filter((event) => {
+            const eventDate = new Date(event.date);
+            eventDate.setHours(0, 0, 0, 0);
+
+            return eventDate >= today;
+        })
         .sort((a, b) => {
             const dateDifference =
                 new Date(a.date).getTime() -
